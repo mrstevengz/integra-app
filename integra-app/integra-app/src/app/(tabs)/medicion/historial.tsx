@@ -1,62 +1,84 @@
 import TopBarSecondary from "@/components/TopBarSecondary";
 import TopBar from "@/components/TopBar";
 import { buscarPorId } from "@/state/consultas";
-import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
+import {
+  mediciones$,
+  medicionesDelPerfil,
+  tiposMedicion$,
+} from "@/state/mediciones";
 import { perfil$ } from "@/state/usuario";
 import { useValue } from "@legendapp/state/react";
 import { ScrollView, View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { labelHelper } from "./agregar/[medicionTipo]/[resultadoMedicion]";
+import { labelHelper } from "./[medicionTipo]/agregar/[resultadoMedicion]";
 import { router } from "expo-router";
 import { formatearFecha } from "@/lib/fechas";
 import { formatearHora } from "@/lib/fechas";
 
 export default function HistorialMediciones() {
-    const perfil = useValue(perfil$)
-    const mediciones = useValue(mediciones$)
-    const tipos = useValue(tiposMedicion$)
-    
-    const medicionesHistorial = medicionesDelPerfil(mediciones, perfil.id)
+  const perfil = useValue(perfil$);
+  const mediciones = useValue(mediciones$);
+  const tipos = useValue(tiposMedicion$);
 
-    return (
-         <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
-                <TopBar name='Medicion' canGoBack={false}/>
-            </SafeAreaView>
-            
-            <TopBarSecondary active="Historial" tab1="Registrar" tab2="Historial" route1="/medicion" route2="/medicion/historial"/>
+  const medicionesHistorial = medicionesDelPerfil(mediciones, perfil.id);
 
-            <ScrollView className="flex-grow" contentContainerStyle={{paddingBottom: 100 }}>
+  return (
+    <View className="flex-1">
+      <SafeAreaView edges={["top"]} className="bg-slate-100">
+        <TopBar name="Medicion" canGoBack={false} />
+      </SafeAreaView>
 
-                    {medicionesHistorial.length === 0 && (
-                    <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                        <Text className="text-neutral-500 text-sm text-center">
-                            No hay historial de mediciones.
-                        </Text>
-                    </View>
-                    )}
+      <TopBarSecondary
+        active="Historial"
+        tab1="Registrar"
+        tab2="Historial"
+        route1="/medicion"
+        route2="/medicion/historial"
+      />
 
-                    {medicionesHistorial.map((m) => {
-                        const t = buscarPorId(tipos, m.tipo_medicion_id)
-                        const medidoEn = new Date(m.medido_en)
+      <ScrollView
+        className="flex-grow"
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {medicionesHistorial.length === 0 && (
+          <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
+            <Text className="text-neutral-500 text-sm text-center">
+              No hay historial de mediciones.
+            </Text>
+          </View>
+        )}
 
-                        return (
-                            <Pressable key={m.id} className="p-6 justify-between flex flex-row items-center border-b border-slate-400 bg-bg-color"
-                            onPress={() => router.navigate({
-                                pathname: '/medicion/[medicionId]',
-                                params: {medicionId: m.id}
-                            })}
-                            >
-                                <View>
-                                    <Text className="text-md font-semibold">{t?.nombre}</Text>
-                                    <Text className="text-sm text-slate-500">{formatearFecha(medidoEn)} ⋅ {formatearHora(medidoEn)} {labelHelper(m.contexto)}</Text>
-                                </View>
-                                
-                                <Text className="text-lg font-bold">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`} {t?.unidad} </Text>
-                            </Pressable>
-                        )
-            })}
-                </ScrollView>
-        </View>
-    )
+        {medicionesHistorial.map((m) => {
+          const t = buscarPorId(tipos, m.tipo_medicion_id);
+          const medidoEn = new Date(m.medido_en);
+
+          return (
+            <Pressable
+              key={m.id}
+              className="p-6 justify-between flex flex-row items-center border-b border-slate-400 bg-bg-color"
+              onPress={() =>
+                router.navigate({
+                  pathname: "/medicion/[medicionId]",
+                  params: { medicionId: m.id },
+                })
+              }
+            >
+              <View>
+                <Text className="text-md font-semibold">{t?.nombre}</Text>
+                <Text className="text-sm text-slate-500">
+                  {formatearFecha(medidoEn)} ⋅ {formatearHora(medidoEn)}{" "}
+                  {labelHelper(m.contexto)}
+                </Text>
+              </View>
+
+              <Text className="text-lg font-bold">
+                {m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}{" "}
+                {t?.unidad}{" "}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
 }
