@@ -15,7 +15,7 @@ export default function ResultadoMedicion() {
     const medicion = buscarPorId(mediciones, resultadoMedicion as string)
     const tipo = buscarPorId(tipos, medicion?.tipo_medicion_id ?? "")
 
-     if (!medicion) {
+     if (!medicion || !tipo) {
             return (
                 <View className="flex-1 justify-center items-center px-6">
                     <Text className="text-gray-400">Error</Text>
@@ -90,11 +90,18 @@ export default function ResultadoMedicion() {
 
 
                 <View className="flex-row gap-4 flex">
-                    <Pressable className="p-4 border rounded-xl">
+                    <Pressable className="p-4 border rounded-xl"
+                    onPress={() => router.navigate({
+                        pathname: '/medicion/[medicionTipo]/evolucion',
+                        params: {medicionTipo: tipo.id}
+                    })}>
                         <Text>Ver evolucion</Text>
                     </Pressable>
 
-                    <Pressable className="p-4 border rounded-xl">
+                    <Pressable onPress={() => router.navigate({
+                        pathname: '/medicion/[medicionId]/editar',
+                        params: {medicionId: medicion.id}
+                    })} className="p-4 border rounded-xl">
                         <Text>Editar</Text>
                     </Pressable>
                 </View>
@@ -106,11 +113,11 @@ export default function ResultadoMedicion() {
 
 export function labelHelper(contexto: string | null) {
     if (contexto === null) return ''
-    if (contexto === 'en_ayunas') return '⋅ En ayunas'
-    if (contexto === 'despues_comer') return '⋅ Despues de comer'
-    if (contexto === 'antes_dormir') return '⋅ Antes de dormir'
-    if (contexto === 'en_reposo') return '⋅ En reposo'
-    if (contexto === 'despues_ejercicio') return '⋅ Despues de ejercicio'
+    if (contexto === 'en_ayunas') return 'En ayunas'
+    if (contexto === 'despues_comer') return 'Despues de comer'
+    if (contexto === 'antes_dormir') return 'Antes de dormir'
+    if (contexto === 'en_reposo') return 'En reposo'
+    if (contexto === 'despues_ejercicio') return 'Despues de ejercicio'
     if (contexto === 'otro') return ''
 
     return ''

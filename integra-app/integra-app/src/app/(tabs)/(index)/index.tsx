@@ -14,6 +14,12 @@ import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
 import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
 
+export const estilosScrollView = {
+    paddingTop: 20,
+    paddingBottom: 120,
+    paddingHorizontal: 20
+}
+
 export default function HomeScreen() {
     const perfil = useValue(perfil$)
     
@@ -56,19 +62,19 @@ export default function HomeScreen() {
 
        <ScrollView
                 className="flex-grow bg-slate-100"
-                contentContainerStyle={{ paddingTop: 20, paddingBottom: 120, paddingHorizontal: 15 }}
+                contentContainerStyle={estilosScrollView}
         >
 
             <ProximaToma tomas = {tomasDeHoy}/>
 
             <View className="flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm mt-4">
                 <View className="flex-row justify-between mb-2">
-                    <Text className="font-semibold">Progreso del dia</Text>
-                    <Text className="font-semibold">{tomasDeHoy.length !== 0 ? `${tomasResueltas} de ${tomasDeHoy.length} tomados` : `No hay tomas hoy`}</Text>
+                    <Text className="font-semibold font-lexend">Progreso del dia</Text>
+                    <Text className="font-semibold font-lexend">{tomasDeHoy.length !== 0 ? `${tomasResueltas} de ${tomasDeHoy.length} tomados` : `No hay tomas hoy`}</Text>
                 </View>
 
                 <View className="h-4 w-full overflow-hidden bg-neutral-color rounded-3xl">
-                    <View className="h-full bg-sec-color border-r-8 rounded-lg" style={{
+                    <View className="h-full bg-sec-color rounded-lg" style={{
                         width: `${(tomasResueltas/tomasDeHoy.length)* 100}%`
                     }}/>
                 </View>
@@ -77,18 +83,18 @@ export default function HomeScreen() {
             <ProximaCita citasProximas={citasProximasLista}/>
 
              <View className="flex-row items-center justify-between my-5">
-                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider">
+                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
                     Ultimas mediciones
                 </Text>
             
                 <Pressable onPress={() => router.push('/medicion')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-neutral-400 text-md font-medium">Ver todas</Text>
+                    <Text className="text-neutral-400 text-md font-medium font-lexend">Ver todas</Text>
                 </Pressable>
             </View>
 
             {medicionComponente.length === 0 && (
                 <View className="rounded-2xl border border-neutral-200 bg-white p-5 items-center justify-between">
-                    <Text className="text-neutral-500 text-sm">No hay historial de mediciones</Text>
+                    <Text className="text-neutral-500 text-sm font-lexend">No hay historial de mediciones</Text>
                 </View>
             )}
 
@@ -99,22 +105,22 @@ export default function HomeScreen() {
 
                     return (
                         <Pressable className="flex-col flex-1 justify-start rounded-2xl bg-white p-4 shadow-sm active:bg-white/80" key={m.id} onPress={() => router.navigate('/medicion/historial')}>
-                            <Text className="text-btn-color font-light">{t?.nombre}</Text>
-                            <Text className="text-2xl font-bold">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}</Text>
-                            <Text className="text-txt-color font-bold">{t?.unidad}</Text>
-                            <Text className="text-slate-400">{medidoEn.toDateString().slice(4, 10)} {medidoEn.toTimeString().slice(0,5)}</Text>
+                            <Text className="text-btn-color font-light font-lexend">{t?.nombre}</Text>
+                            <Text className="text-2xl font-bold font-lexend">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}</Text>
+                            <Text className="text-txt-color font-bold font-lexend">{t?.unidad}</Text>
+                            <Text className="text-slate-400 font-lexend">{medidoEn.toDateString().slice(4, 10)} {medidoEn.toTimeString().slice(0,5)}</Text>
                         </Pressable>
                     )
                 }))}
             </View>
 
             <View className="flex-row items-center justify-between my-5">
-                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider">
+                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
                     Articulos Destacados
                 </Text>
             
                 <Pressable onPress={() => router.push('/articulos')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-neutral-400 text-md font-medium">Ver todos</Text>
+                    <Text className="text-neutral-400 text-md font-medium font-lexend">Ver todos</Text>
                 </Pressable>
 
                 

@@ -10,6 +10,9 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        lexend: ["Lexend_Font"],
+      },
       colors: {
         surface: {
           DEFAULT: c("--surface"),
@@ -52,9 +55,6 @@ module.exports = {
           subtle: c("--danger-subtle"),
           "on-subtle": c("--danger-on-subtle"),
         },
-
-        // legacy
-        // legacy
         "bg-color": c("--background-color"),
         "neutral-color": c("--neutral-color"),
         "txt-color": c("--text-color"),

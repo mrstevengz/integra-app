@@ -6,7 +6,7 @@ import { ActivityIndicator, View, Text, Pressable } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { perfil$ } from "@/state/usuario";
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
-
+import { useFonts } from "expo-font";
 
 export function ErrorBoundary({error, retry}: ErrorBoundaryProps) {
   return (
@@ -21,10 +21,17 @@ export function ErrorBoundary({error, retry}: ErrorBoundaryProps) {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Lexend_Font: require("../../assets/fonts/Lexend_Font.ttf"),
+  });
   const perfil = useValue(perfil$)
   const cargando = useValue(auth$.cargando)
   const cerrandoSesion = useValue(auth$.cerrandoSesion)
   const sesion = useValue(auth$.session)
+
+  if (!fontsLoaded) {
+    return null; 
+  }
 
   //No dejar de cargar hasta confirmar que los datos pertenecen al usuario
   const sesionLista = !!sesion && perfil.id === sesion.user.id

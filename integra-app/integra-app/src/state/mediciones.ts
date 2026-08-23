@@ -3,6 +3,7 @@ import { observable } from "@legendapp/state";
 import {
   convertirALista,
   delPerfil,
+  masAntiguoPrimero,
   masRecientePrimero,
   porNombre,
 } from "./consultas";
@@ -90,9 +91,9 @@ export function medicionesDeTipo(
 }
 
 export function retornarMedicionesParaGrafica(mediciones: Medicion[]) {
-  mediciones.map(({ valor, valor_secundario, medido_en }) => ({
-    valor,
-    valor_secundario,
-    medido_en,
-  }));
+  return [...mediciones]
+    .sort(masAntiguoPrimero((m) => m.medido_en))
+    .map(({ valor, valor_secundario, medido_en }) => ({ valor, valor_secundario, medido_en }))
 }
+
+//Funcion helper para calcular el punto intermedio de las graficas

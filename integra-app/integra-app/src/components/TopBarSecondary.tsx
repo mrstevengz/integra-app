@@ -19,7 +19,7 @@ export default function TopBarSecondary({ active, tab1, tab2, route1, route2 }: 
   ]
 
   return (
-    <View className="bg-surface px-5 pt-1 pb-3">
+    <View className="px-5 py-3 bg-transparent">
         <View className="flex-row rounded-control bg-line-strong/30 p-1">
         {tabs.map((t) => (
           <Pressable

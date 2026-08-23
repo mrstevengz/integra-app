@@ -81,7 +81,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
   return (
     <View className="w-full">
       <View className="flex-row items-center justify-between mb-3">
-        <Text className="text-btn-color text-md font-semibold uppercase tracking-wider">
+        <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
           Próxima toma
         </Text>
 
@@ -90,7 +90,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
           hitSlop={8}
           accessibilityRole="button"
         >
-          <Text className="text-neutral-400 text-md font-medium">
+          <Text className="text-neutral-400 text-md font-medium font-lexend">
             Ver todas
           </Text>
         </Pressable>
@@ -98,7 +98,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
 
       {!tomaReciente ? (
         <View className="rounded-2xl border border-neutral-200 bg-white p-5 items-center">
-          <Text className="text-neutral-500 text-sm">
+          <Text className="text-neutral-500 text-sm font-lexend">
             No hay tomas pendientes por hoy
           </Text>
         </View>
@@ -112,7 +112,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
               </View>
 
               <View className="flex-1 pr-3">
-                <Text className="text-base font-bold text-neutral-900 tracking-tight">
+                <Text className="text-base font-bold text-neutral-900 tracking-tight font-lexend">
                   {medicamentoReciente
                     ? `${medicamentoReciente.nombre} ${medicamentoReciente.dosis}${medicamentoReciente.unidad}`
                     : "Medicamento"}
@@ -120,7 +120,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
 
                 {medicamentoReciente?.con_alimentos &&
                   medicamentoReciente.con_alimentos !== "indiferente" && (
-                    <Text className="text-xs text-neutral-500 mt-0.5">
+                    <Text className="text-xs text-neutral-500 mt-0.5 font-lexend">
                       {medicamentoReciente.con_alimentos === "con"
                         ? "Con alimentos"
                         : "Sin alimentos"}
@@ -129,7 +129,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
               </View>
 
               <View className="items-end">
-                <Text className="text-base font-bold text-neutral-900">
+                <Text className="text-base font-bold text-neutral-900 font-lexend">
                   {new Date(tomaReciente.programada_para).toLocaleTimeString(
                     "es-CR",
                     {
@@ -138,7 +138,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
                     },
                   )}
                 </Text>
-                <Text className="text-xs text-neutral-400 mt-0.5">
+                <Text className="text-xs text-neutral-400 mt-0.5 font-lexend">
                   {getTimeRemaining()}
                 </Text>
               </View>
@@ -151,7 +151,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
                 accessibilityRole="button"
                 className="flex-1 bg-btn-color rounded-2xl py-4 items-center active:opacity-90 shadow-sm"
               >
-                <Text className="text-bg-color font-semibold text-base">
+                <Text className="text-bg-color font-semibold text-base font-lexend">
                   ✓ Tomado
                 </Text>
               </Pressable>
@@ -165,7 +165,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
                 disabled={pospuesta}
                 className={`flex-1 border border-btn-color rounded-2xl py-4 items-center active:bg-neutral-color ${pospuesta && "bg-slate-200"}`}
               >
-                <Text className="text-btn-color font-semibold text-base">
+                <Text className="text-btn-color font-semibold text-base font-lexend">
                   {pospuesta ? `Pospuesta (15 min)` : `Posponer`}
                 </Text>
               </Pressable>

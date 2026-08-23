@@ -18,8 +18,10 @@ import {
   ScrollView,
   Text,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { color } from "@/theme/colors";
 
 type Estado = "bajo" | "normal" | "elevado";
 
@@ -70,6 +72,12 @@ export default function DetalleMedicion() {
       : null;
 
   const id = medicionAEditar?.id ?? "";
+
+  if (medicionAEditar === undefined) return (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color={color.primary} />
+        </View>
+  )
 
   return (
     <View className="flex-1">
@@ -164,7 +172,7 @@ export default function DetalleMedicion() {
               onPress={() =>
                 router.navigate({
                   pathname: "/medicion/[medicionId]/editar",
-                  params: { medicionId: medicionAEditar?.id },
+                  params: { medicionId: medicionAEditar.id },
                 })
               }
             >
