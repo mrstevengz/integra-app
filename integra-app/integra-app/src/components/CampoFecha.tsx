@@ -51,14 +51,14 @@ export function CampoFecha<T extends FieldValues>({
     
     return (
         <View className="mb-4">
-            <Text className='mb-2 text-lg'>{title}</Text>
+            <Text className='font-lexend-bold mb-1'>{title}</Text>
                     
             <Pressable
                 className={`border rounded-lg py-4 px-4 bg-white flex ${error ? 'border-red-400' : 'border-slate-300'}`}
                 onPress={abrirPicker}>
                 <Text numberOfLines={1}
                     ellipsizeMode="tail"
-                    className={field.value ? 'text-slate-900 text-lg' : 'text-slate-400 text-lg'}
+                    className={field.value ? 'font-lexend' : 'text-content-disabled font-lexend'}
                     >
                     {field.value
                     ? mode === 'time'

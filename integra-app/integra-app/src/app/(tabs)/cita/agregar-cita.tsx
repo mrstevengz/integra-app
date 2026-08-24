@@ -8,7 +8,7 @@ import { router } from "expo-router"
 import { useForm } from "react-hook-form"
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text } from "react-native"
 import { View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useState } from "react"
 import { CitaForm, citasSchema, TIPO_CITA } from "@/features/citas/citas-schema"
 import { citas$, type TipoCita } from "@/state/citas";
@@ -19,6 +19,7 @@ import { combinarFechaHora } from "@/lib/fechas"
 
 export default function AgregarCitaScreen() {
     const perfil = useValue(perfil$)
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const hoy = new Date()
@@ -83,14 +84,13 @@ export default function AgregarCitaScreen() {
                 <TopBar name='Nueva cita' canGoBack={true}/>
             </SafeAreaView>
 
-            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+            <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <ScrollView
                 className="flex-grow bg-white"
                 contentContainerStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 20,
                     paddingTop: 20,
-                    paddingBottom: 120
                 }}
                 keyboardShouldPersistTaps="handled"
             >
@@ -116,14 +116,15 @@ export default function AgregarCitaScreen() {
                 
 
                 <CampoTexto name="notas" control={control} title="Notas / Instrucciones previas" opcional={true} placeholder="Ej. Acudir en ayunas"/>
-
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                className="bg-black py-4 rounded-lg active:bg-black/50">
-                    <Text className="text-white text-center">
-                        {isSubmitting? "Guardando..." : "Guardar condicion"}
-                    </Text>
-                </Pressable>
             </ScrollView>
+
+            <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                style={{ marginBottom: insets.bottom + 12 + 49 }}
+                className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
+                <Text className="font-lexend text-center text-content-on-primary">
+                    {isSubmitting? "Guardando..." : "Guardar cita"}
+                </Text>
+            </Pressable>
         </KeyboardAvoidingView>
         </View>
     )

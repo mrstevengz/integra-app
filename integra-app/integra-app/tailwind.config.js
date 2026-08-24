@@ -11,7 +11,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        lexend: ["Lexend_Font"],
+        lexend: ["LexendDeca-Regular"],
+        "lexend-bold": ["LexendDeca-Bold"],
+        "lexend-extrabold": ["LexendDeca-Black"],
       },
       colors: {
         surface: {
@@ -30,8 +32,10 @@ module.exports = {
         },
         line: {
           DEFAULT: c("--border"),
+          subtle: c("--border-subtle"),
           strong: c("--border-strong"),
           focus: c("--border-focus"),
+          primary: c("--border-primary"),
         },
         primary: {
           DEFAULT: c("--primary"),
@@ -71,6 +75,18 @@ module.exports = {
         label: ["15px", { lineHeight: "20px" }],
         caption: ["14px", { lineHeight: "20px" }],
         "large-title": ["34px", { lineHeight: "41px" }],
+      },
+
+      letterSpacing: {
+        "large-title": "-1px",
+        display: "-0.8px",
+        title: "-0.6px",
+        heading: "-0.4px",
+        subheading: "-0.2px",
+      },
+
+      borderWidth: {
+        hairline: "0.5px",
       },
 
       borderRadius: {

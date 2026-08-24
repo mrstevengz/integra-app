@@ -9,7 +9,7 @@ import { router, useLocalSearchParams } from "expo-router"
 import { useForm, useWatch } from "react-hook-form"
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text } from "react-native"
 import { View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useState } from "react"
 import { z } from "zod"
 import { resultadoCitasSchema, RESULTADO_CITA } from "@/features/citas/resultado-cita-schema"
@@ -58,6 +58,7 @@ export default function RegistrarResultadoScreen() {
     const cita = buscarPorId(citas, citaId as string)
     const yaRegistrada = !!resultadoDeCita(resultados, citaId as string)
 
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {control, handleSubmit, reset} = useForm<ProximaCitaForm>({
@@ -151,14 +152,13 @@ export default function RegistrarResultadoScreen() {
                 <TopBar name='Registrar resultado' canGoBack={true}/>
             </SafeAreaView>
 
-            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+            <KeyboardAvoidingView className="flex-1 bg-surface" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <ScrollView
                     className="flex-grow bg-surface"
                     contentContainerStyle={{
                         flexGrow: 1,
                         paddingHorizontal: 20,
                         paddingTop: 20,
-                        paddingBottom: 120
                     }}
                     keyboardShouldPersistTaps="handled"
                 >
@@ -212,13 +212,15 @@ export default function RegistrarResultadoScreen() {
                         )}
                     </View>
 
-                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                        className="bg-black py-4 rounded-lg active:bg-black/50 mt-4">
-                        <Text className="text-white text-center">
-                            {isSubmitting ? "Guardando..." : "Guardar resultado"}
-                        </Text>
-                    </Pressable>
                 </ScrollView>
+
+                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                    style={{ marginBottom: insets.bottom + 12 + 49 }}
+                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
+                    <Text className="font-lexend text-center text-content-on-primary">
+                        {isSubmitting ? "Guardando..." : "Guardar resultado"}
+                    </Text>
+                </Pressable>
             </KeyboardAvoidingView>
         </View>
     )

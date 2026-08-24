@@ -1,5 +1,5 @@
 import { View, ActivityIndicator, ScrollView, Pressable, Text, KeyboardAvoidingView, Platform, TouchableOpacity} from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import TopBar from "@/components/TopBar";
 import { useValue } from "@legendapp/state/react";
 import { perfil$ } from "@/state/usuario";
@@ -15,6 +15,7 @@ import { color } from "@/theme/colors";
 
 export default function PerfilScreen() {
     const perfil = useValue(perfil$)
+    const insets = useSafeAreaInsets()
 
     const {control, handleSubmit, formState: {isDirty}, reset} = useForm<PerfilForm>({
         resolver: zodResolver(perfilSchema),
@@ -67,14 +68,13 @@ export default function PerfilScreen() {
                 <TopBar name='Datos personales' canGoBack={true}/>
             </SafeAreaView>
 
-        <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <KeyboardAvoidingView className="flex-1 bg-slate-100" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <ScrollView
                     className="flex-grow bg-slate-100"
                     contentContainerStyle={{
                         flexGrow: 1,
                         paddingHorizontal: 20,
                         paddingTop: 20,
-                        paddingBottom: 120,
                     }}
                     keyboardShouldPersistTaps="handled">
                 
@@ -110,15 +110,16 @@ export default function PerfilScreen() {
                 name="medicoTratante" control = {control} title="Medico Tratante"
                 />
 
+                </ScrollView>
+
                 <Pressable
                 onPress={handleSubmit(onSubmit)}
                 disabled={!isDirty}
-                className={`bg-black py-4 rounded-lg ${!isDirty && 'bg-black/40'}`}
+                style={{ marginBottom: insets.bottom + 12 + 49 }}
+                className={`p-4 rounded-control mx-5 mt-3 mb-4 ${isDirty ? 'bg-primary active:bg-primary-pressed' : 'bg-content-disabled'}`}
                 >
-                    <Text className="text-white text-center">Guardar cambios</Text>
+                    <Text className="font-lexend text-center text-content-on-primary">Guardar cambios</Text>
                 </Pressable>
-
-                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

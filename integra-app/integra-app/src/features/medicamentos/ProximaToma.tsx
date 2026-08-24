@@ -8,6 +8,7 @@ import { View, Pressable, Text } from "react-native";
 import { marcarComoTomada, posponerToma } from "@/state/tomas-acciones";
 import { iconoDeForma } from "./iconos";
 
+
 interface ComponenteProps {
   tomas: Toma[];
 }
@@ -59,8 +60,8 @@ export function ProximaToma({ tomas }: ComponenteProps) {
       return (
         <Text>
           {hours > 0
-            ? `En ${hours}h ${minutes - hours * 60}min`
-            : `En ${minutes - hours * 60}min`}
+            ? `en ${hours}h ${minutes - hours * 60}min`
+            : `en ${minutes - hours * 60}min`}
         </Text>
       );
     } else {
@@ -71,8 +72,8 @@ export function ProximaToma({ tomas }: ComponenteProps) {
       return (
         <Text className="text-red-400">
           {hours > 0
-            ? `Hace ${hours}h ${minutes - hours * 60}min`
-            : `Hace ${minutes - hours * 60}min`}
+            ? `hace ${hours}h ${minutes - hours * 60}min`
+            : `hace ${minutes - hours * 60}min`}
         </Text>
       );
     }
@@ -81,7 +82,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
   return (
     <View className="w-full">
       <View className="flex-row items-center justify-between mb-3">
-        <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
+        <Text className="text-heading font-lexend">
           Próxima toma
         </Text>
 
@@ -90,7 +91,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
           hitSlop={8}
           accessibilityRole="button"
         >
-          <Text className="text-neutral-400 text-md font-medium font-lexend">
+          <Text className="text-body text-primary font-lexend-bold tracking-heading">
             Ver todas
           </Text>
         </Pressable>
@@ -98,21 +99,21 @@ export function ProximaToma({ tomas }: ComponenteProps) {
 
       {!tomaReciente ? (
         <View className="rounded-2xl border border-neutral-200 bg-white p-5 items-center">
-          <Text className="text-neutral-500 text-sm font-lexend">
+          <Text className="text-content-muted text-label font-lexend">
             No hay tomas pendientes por hoy
           </Text>
         </View>
       ) : (
         <>
-          <View className="flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm ">
+          <View className="flex-col gap-6 rounded-card p-4 shadow-sm bg-surface-raised ">
             {/* //Texto, icono y hora */}
             <View className="flex flex-row items-center">
-              <View className="flex-2 p-4 items-center justify-center rounded-xl bg-slate-200 border border-slate-300 mr-4">
+              <View className="flex-2 p-4 items-center justify-center rounded-card bg-surface border border-surface-sunken mr-4">
                 {iconoDeForma(medicamentoReciente?.forma)}
               </View>
 
               <View className="flex-1 pr-3">
-                <Text className="text-base font-bold text-neutral-900 tracking-tight font-lexend">
+                <Text className="tracking-tight font-lexend text-subheading">
                   {medicamentoReciente
                     ? `${medicamentoReciente.nombre} ${medicamentoReciente.dosis}${medicamentoReciente.unidad}`
                     : "Medicamento"}
@@ -120,7 +121,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
 
                 {medicamentoReciente?.con_alimentos &&
                   medicamentoReciente.con_alimentos !== "indiferente" && (
-                    <Text className="text-xs text-neutral-500 mt-0.5 font-lexend">
+                    <Text className="text-subheading text-content-muted mt-0.5 font-lexend">
                       {medicamentoReciente.con_alimentos === "con"
                         ? "Con alimentos"
                         : "Sin alimentos"}
@@ -129,7 +130,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
               </View>
 
               <View className="items-end">
-                <Text className="text-base font-bold text-neutral-900 font-lexend">
+                <Text className="font-lexend-bold text-heading text-primary tracking-tighter">
                   {new Date(tomaReciente.programada_para).toLocaleTimeString(
                     "es-CR",
                     {
@@ -138,7 +139,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
                     },
                   )}
                 </Text>
-                <Text className="text-xs text-neutral-400 mt-0.5 font-lexend">
+                <Text className=" mt-0.5 font-lexend text-content-muted">
                   {getTimeRemaining()}
                 </Text>
               </View>
@@ -149,10 +150,10 @@ export function ProximaToma({ tomas }: ComponenteProps) {
               <Pressable
                 onPress={() => marcarComoTomada(tomaReciente.id)}
                 accessibilityRole="button"
-                className="flex-1 bg-btn-color rounded-2xl py-4 items-center active:opacity-90 shadow-sm"
+                className="flex-1 bg-btn-color py-4 items-center active:opacity-90 shadow-sm  rounded-control"
               >
-                <Text className="text-bg-color font-semibold text-base font-lexend">
-                  ✓ Tomado
+                <Text className="text-bg-color text-subheading font-lexend tracking-wide">
+                  Tomado
                 </Text>
               </Pressable>
 
@@ -163,9 +164,9 @@ export function ProximaToma({ tomas }: ComponenteProps) {
                 }}
                 accessibilityRole="button"
                 disabled={pospuesta}
-                className={`flex-1 border border-btn-color rounded-2xl py-4 items-center active:bg-neutral-color ${pospuesta && "bg-slate-200"}`}
+                className={`flex-1 border border-content-disabled rounded-control py-4 items-center active:bg-neutral-color ${pospuesta && "bg-slate-200"}`}
               >
-                <Text className="text-btn-color font-semibold text-base font-lexend">
+                <Text className="text-subheading font-lexend tracking-wide">
                   {pospuesta ? `Pospuesta (15 min)` : `Posponer`}
                 </Text>
               </Pressable>

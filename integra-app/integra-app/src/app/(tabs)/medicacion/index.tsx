@@ -70,17 +70,17 @@ export default function MedicacionScreen() {
 
 
             <ScrollView
-                className="flex-grow bg-surface-raised"
+                className="flex-grow"
                 contentContainerStyle={{ paddingTop: 20, paddingBottom: 80 }}
             >
 
-                <View className=" flex flex-col px-6 my-4">
-                    <View className="flex-row justify-between mb-2">
-                        <Text className="text-label text-content-muted">Progreso del dia</Text>
-                        <Text className = "text-label font-semibold text-content">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis tomadas` : `No hay dosis programadas para hoy`}</Text>
+                <View className=" flex flex-col">
+                    <View className="flex-row justify-between mb-2 px-6">
+                        <Text className="text-label text-content-muted font-lexend">Progreso del dia</Text>
+                        <Text className = "font-lexend-bold">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis` : `No hay dosis programadas para hoy`}</Text>
                     </View>
-                    <View className="h-4 w-full overflow-hidden rounded-3xl bg-surface">
-                        <View className="h-full bg-primary" style={{
+                    <View className="h-1 w-full overflow-hidden rounded-card bg-surface">
+                        <View className="h-full bg-success" style={{
                              width: `${hoy.length > 0 ? (tomasResueltas / hoy.length) * 100 : 0}%`
                         }}/>
                     </View>

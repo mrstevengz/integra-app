@@ -4,8 +4,10 @@ import TopBar from "@/components/TopBar";
 import { medicamentos$, medicamentosActivos } from "@/state/medicamentos";
 import { perfil$ } from "@/state/usuario";
 import { useValue } from "@legendapp/state/react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GlassView } from "expo-glass-effect";
+import { router } from "expo-router";
 
 export default function HistorialMedicamentos() {
         const perfil = useValue(perfil$)
@@ -16,7 +18,7 @@ export default function HistorialMedicamentos() {
     
     return (
         <View className="flex-1">
-        <SafeAreaView edges={['top']} className="bg-slate-100">
+        <SafeAreaView edges={['top']} className="bg-surface">
             <TopBar
                 name="Medicación"
                 canGoBack={false}
@@ -28,10 +30,8 @@ export default function HistorialMedicamentos() {
         <TopBarSecondary active="Medicamentos" tab1="Tomas" tab2="Medicamentos" route1="/medicacion" route2="/medicacion/historial"/>
 
         <ScrollView
-        className="flex-grow bg-neutral-50"
-        contentContainerStyle={{ paddingTop: 20, paddingBottom: 80 }}>
-
-            <Text className="text-2xl font-bold text-neutral-900 tracking-tight mb-4 px-6">Mis medicamentos</Text>
+        className="flex-grow bg-surface"
+        contentContainerStyle={{ paddingBottom: 80 }}>
             
             {lista.length === 0 && (
             <View className="mx-6 mb-6 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
@@ -45,6 +45,31 @@ export default function HistorialMedicamentos() {
             <MedicinasLista key = {item.id} {...item}/>
             ))}
         </ScrollView>
+
+        <GlassView
+                    style={{
+                    position: 'absolute',
+                    bottom: 144, 
+                    right: 24,   
+                    height: 64,  
+                    width: 64,   
+                    borderRadius: 32, 
+                    overflow: 'hidden',
+                    }}
+                    glassEffectStyle="clear"
+                    tintColor="#1C469C"
+                    isInteractive
+                    >
+                        <TouchableOpacity
+                        onPress={() => router.navigate('/medicacion/agregar-medicamento')}
+                        accessibilityRole="button"
+                        className={`flex-1 justify-center items-center ${Platform.OS === "android" ? 'bg-primary' : ''}`}
+                        >
+                        <Text className="text-content-on-primary text-center items-center text-4xl">+</Text>
+                        </TouchableOpacity>
+        </GlassView>
+
+        
         </View>
     )
 }

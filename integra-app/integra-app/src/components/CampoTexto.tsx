@@ -1,5 +1,6 @@
 import { View, Text, TextInput } from 'react-native'
 import { Control, FieldValues, Path, useController} from 'react-hook-form'
+import { useState } from 'react'
 
 type Props<T extends FieldValues> = {
     name: Path<T>
@@ -9,7 +10,8 @@ type Props<T extends FieldValues> = {
     keyboardType?: 'default' | 'email-address' | 'phone-pad'
     autoComplete?: 'name' | 'family-name' | 'email' | 'new-password' | 'tel' | 'off'
     opcional?: boolean,
-    title: string
+    title: string,
+    telefono?: boolean,
 }
 
 function separarTelefono(valor: string | undefined): [string, string] {
@@ -21,13 +23,16 @@ function separarTelefono(valor: string | undefined): [string, string] {
 
 export function CampoTexto<T extends FieldValues>({
     control, name, title, placeholder,
-    keyboardType = 'default', autoComplete='off', secureTextEntry=false, opcional=false
+    keyboardType = 'default', autoComplete='off', secureTextEntry=false, opcional=false, telefono=false,
 }: Props<T>) {
 
     const {field, fieldState} = useController({name, control})
     const error = fieldState.error?.message
-    const esTelefono = keyboardType === 'phone-pad'
+    const esTelefono = keyboardType === 'phone-pad' && telefono === true
     const [codigoPais, numero] = esTelefono ? separarTelefono(field.value as string) : ['', '']
+    const [isFocused, setIsFocused] = useState(false)
+    const claseBorde = error ? 'border-danger' : isFocused ? 'border-primary border-2' : 'border-line-strong'
+
 
     const actualizarTelefono = (codigo: string, num: string) => {
         field.onChange(`+${codigo} ${num}`.trim())
@@ -35,23 +40,29 @@ export function CampoTexto<T extends FieldValues>({
 
     return (
         <View className="mb-4">
-            <Text className='mb-2 text-lg'>
-                {title} {opcional && <Text className='text-sm text-slate-500'>(opcional)</Text>} {!opcional && <Text className={`${error ? 'text-red-400' : 'text-slate-400'} font-semibold`}></Text>}
+            <Text className='mb-2 font-lexend-bold'>
+                {title} 
+                {opcional && <Text className='text-label text-content-muted font-lexend'> (opcional)</Text>} {!opcional && <Text className={`${error ? 'text-alert' : 'text-content-muted'}`}></Text>}
             </Text>
 
             {esTelefono ? (
                 <View className="flex-row gap-2">
-                    <View className={`flex-row items-center border rounded-chip bg-surface-raised px-2 ${error ? 'border-red-400' : 'border-slate-300'}`}>
-                        <Text className="text-[17px] text-slate-500">+</Text>
+                    <View className={`flex-row  bg-surface-raised items-center border rounded-chip px-2 ${claseBorde}`}>
+                        <Text className="text-[18px] text-content-muted">+</Text>
                         <TextInput
                         value={codigoPais}
                         onChangeText={(texto) => actualizarTelefono(texto, numero)}
-                        onBlur={field.onBlur}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => {
+                            field.onBlur()
+                            setIsFocused(false)
+                        }}
+
                         keyboardType="number-pad"
                         maxLength={4}
                         maxFontSizeMultiplier={1.3}
                         textAlignVertical="center"
-                        className="w-14 py-3 text-[17px]"
+                        className={`font-lexend flex-1 border rounded-chip bg-surface-raised py-3 px-2 text-[18px] ${claseBorde}`}
                         />
                     </View>
 
@@ -59,12 +70,17 @@ export function CampoTexto<T extends FieldValues>({
                     placeholder={placeholder}
                     value={numero}
                     onChangeText={(texto) => actualizarTelefono(codigoPais, texto)}
-                    onBlur={field.onBlur}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => {
+                        field.onBlur() 
+                        setIsFocused(false)
+                    }}
                     keyboardType="phone-pad"
                     autoComplete={autoComplete}
                     maxFontSizeMultiplier={1.3}
                     textAlignVertical="center"
-                    className={`flex-1 border rounded-chip bg-surface-raised py-3 px-2 text-[17px] ${error ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`font-lexend border rounded-chip bg-surface-raised py-3 px-2 text-[18px] ${claseBorde}`}
+
                     />
                 </View>
             ) : (
@@ -72,17 +88,21 @@ export function CampoTexto<T extends FieldValues>({
                 placeholder={placeholder}
                 value={(field.value as string) ?? ''}
                 onChangeText={field.onChange}
-                onBlur={field.onBlur}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => {
+                    field.onBlur()
+                    setIsFocused(false)
+                }}
                 keyboardType={keyboardType}
                 autoComplete={autoComplete}
                 secureTextEntry={secureTextEntry}
                 maxFontSizeMultiplier={1.3}
                 textAlignVertical="center"
-                className={`border border-line rounded-chip bg-surface-raised py-3 px-2 text-[17px] ${error ? 'border-red-400' : 'border-slate-300'}`}
+                className={`font-lexend border rounded-chip bg-surface-raised py-3 px-2 text-[18px] ${claseBorde}`}
                 />
             )}
 
-            {error && <Text className="text-red-600 text-sm mt-1">{error}</Text>}
+            {error && <Text className="text-danger text-sm mt-1">{error}</Text>}
         </View>
     )
 }

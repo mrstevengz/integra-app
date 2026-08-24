@@ -117,7 +117,7 @@ export default function RegistroScreen() {
 
             {paso === 2 && (
             <>
-                <CampoTexto name='telefono' control={control} title = 'Telefono' placeholder='+505 8823 2345' autoComplete='tel' keyboardType='phone-pad'/>
+                <CampoTexto name='telefono' control={control} title = 'Telefono' placeholder='8823 2345' autoComplete='tel' keyboardType='phone-pad' telefono={true}/>
                 <CampoTexto name='cedula' control={control} title = 'Cedula de identidad' placeholder='(opcional)' autoComplete='off'/>
             </>        
             )}

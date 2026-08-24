@@ -36,15 +36,15 @@ export default function ArticulosDestacados() {
 
             {matches.length === 0 && item && (
             <Pressable 
-                className="flex-col flex-1 justify-start rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm active:bg-white/80" 
+                className="flex-col flex-1 justify-start rounded-card bg-surface-raised p-4 shadow-sm active:bg-surface-sunken" 
                 key={item?.id} 
                 onPress={() => router.navigate({
                     pathname: '/articulos/[categoriaArt]/[articuloId]',
                     params: { categoriaArt: item?.categoria, articuloId: item?.id }
                 })}>
 
-                <Text className="text-alert-color font-lexend">{item?.categoria}</Text>
-                <Text className="text-2xl font-bold font-lexend">{item?.titulo}</Text>
+                <Text className="text-primary font-lexend">{item?.categoria}</Text>
+                <Text className="text-title font-lexend">{item?.titulo}</Text>
             </Pressable>
             )}
 
@@ -54,8 +54,8 @@ export default function ArticulosDestacados() {
                             pathname: '/articulos/[categoriaArt]/[articuloId]',
                             params: {categoriaArt: m.categoria, articuloId: m.id}
                         })}>
-                        <Text className="text-alert-color font-lexend">{m?.categoria}</Text>
-                        <Text className="text-2xl font-bold font-lexend">{m?.titulo}</Text>
+                        <Text className="text-primary font-lexend">{m?.categoria}</Text>
+                        <Text className="text-title font-lexend">{m?.titulo}</Text>
                     </Pressable>
                 )
             }))}

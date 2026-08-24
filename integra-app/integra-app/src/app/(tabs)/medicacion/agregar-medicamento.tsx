@@ -12,12 +12,13 @@ import { CampoHorario } from "@/features/medicamentos/CampoHorario"
 import { CampoSelect } from "@/components/CampoSelect"
 import TopBar from "@/components/TopBar"
 import { View, Text, ActivityIndicator, ScrollView, Pressable, KeyboardAvoidingView, Platform } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { crearId } from "@/lib/ids";
 import { color } from "@/theme/colors";
 
 export default function AgregarMedicamentoScreen() {
     const perfil = useValue(perfil$)
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const { control, handleSubmit, formState: { errors } } = useForm<MedicamentoForm>({
@@ -84,18 +85,17 @@ export default function AgregarMedicamentoScreen() {
                 <TopBar name='Agregar medicamento' canGoBack={true}/>
             </SafeAreaView>
 
-        <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+        <KeyboardAvoidingView className="flex-1 bg-surface" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
             <ScrollView
-                className="flex-grow bg-white"
+                className="flex-grow bg-surface"
                 contentContainerStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 20,
                     paddingTop: 20,
-                    paddingBottom: 120
                 }}
                 keyboardShouldPersistTaps="handled"
             >
-                <CampoTexto name="nombre" control={control} title="Nombre del medicamento"
+                <CampoTexto name="nombre" control={control} title="Nombre"
                     placeholder="Paracetamol"/>
 
                 <CampoTexto name="dosis" control={control} title="Dosis"
@@ -104,16 +104,16 @@ export default function AgregarMedicamentoScreen() {
                 <CampoSelect name="unidad" control={control} title="Unidad"
                     opciones={OPCIONES_UNIDAD}/>
 
-                <CampoSelect name="forma" control={control} title="Forma farmaceutica"
+                <CampoSelect name="forma" control={control} title="Forma Farmaceutica"
                     opciones={OPCIONES_FORMA}/>
 
-                <CampoSelect name="con_alimentos" control={control} title="Con alimentos"
+                <CampoSelect name="con_alimentos" control={control} title="Contexto"
                     opciones={OPCIONES_ALIMENTOS}/>
 
                 <CampoTexto name="indicaciones" control={control} title="Indicaciones del medico"
                     placeholder="Ej. Tomar con abundante agua" opcional/>
 
-                <Text className="text-lg font-semibold text-slate-900 mt-4 mb-3">Horarios</Text>
+                <Text className="text-label mt-4 mb-3">Horarios</Text>
 
                 {fields.map((field, index) => (
                     <CampoHorario
@@ -134,22 +134,23 @@ export default function AgregarMedicamentoScreen() {
                 <Pressable
                     onPress={() => append({ hora: '20:00', dias: TODOS_LOS_DIAS })}
                     disabled={fields.length >= 6}
-                    className={`border rounded-lg py-3 items-center mb-6 ${
-                        fields.length >= 6 ? 'border-slate-200' : 'border-teal-700'
+                    className={`py-3 mb-6 text-white ${
+                        fields.length >= 6 ? 'border-slate-200' : ''
                     }`}
                 >
-                    <Text className={fields.length >= 6 ? 'text-slate-400' : 'text-teal-700'}>
+                    <Text className={fields.length >= 6 ? 'text-white' : 'text-white'}>
                         {fields.length >= 6 ? 'Maximo 6 horarios' : '+ Agregar horario'}
                     </Text>
                 </Pressable>
-
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    className="bg-black py-4 rounded-lg">
-                    <Text className="text-white text-center">
-                        {isSubmitting ? "Guardando..." : "Guardar medicamento"}
-                    </Text>
-                </Pressable>
             </ScrollView>
+
+            <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                style={{ marginBottom: insets.bottom + 12 + 49 }}
+                className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
+                <Text className="font-lexend text-center text-content-on-primary">
+                    {isSubmitting ? "Guardando..." : "Guardar medicamento"}
+                </Text>
+            </Pressable>
         </KeyboardAvoidingView>
         </View>
     )

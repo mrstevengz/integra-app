@@ -23,9 +23,7 @@ export default function TopBar({
 }: TopBarProps) {
    if (grande) {
         return (
-            <BlurView className="bg-surface px-5 pt-2 pb-3 flex-row items-start justify-between"
-            tint="systemChromeMaterial"
-            intensity={80}>
+            <View className="px-5 pt-2 pb-3 flex-row items-start justify-between">
                 <View className="flex-1 pr-3">
                     {subtitulo && (
                         <Text className="text-caption text-content-muted font-lexend" numberOfLines={1}>
@@ -33,7 +31,7 @@ export default function TopBar({
                         </Text>
                     )}
                     <Text
-                        className="text-large-title text-content font-lexend font-bold"
+                        className="text-large-title text-content font-lexend-bold"
                         style={{ letterSpacing: -0.8 }}
                         numberOfLines={1}
                     >
@@ -54,7 +52,7 @@ export default function TopBar({
                         {accionIcono}
                     </Pressable>
                 )}
-            </BlurView>
+            </View>
         )
     }
 

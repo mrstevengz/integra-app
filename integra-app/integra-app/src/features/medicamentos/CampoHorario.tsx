@@ -71,17 +71,17 @@ export function CampoHorario({ control, index, onEliminar, puedeEliminar }: Prop
 
 
     return (
-        <View className="border border-slate-300 rounded-lg p-4 mb-3">
+        <View className="py-2 mb-3">
             <View className="flex-row justify-between items-center mb-3">
                 <Pressable onPress={abrir}>
-                    <Text className="text-2xl font-semibold text-slate-900">
+                    <Text className="font-lexend-bold text-heading">
                         {mostrarHora(hora.field.value)}
                     </Text>
                 </Pressable>
 
                 {puedeEliminar && (
                     <Pressable onPress={onEliminar} className="px-3 py-1">
-                        <Text className="text-red-600">Eliminar</Text>
+                        <Text className="text-alert-color font-lexend">Eliminar</Text>
                     </Pressable>
                 )}
             </View>
@@ -100,8 +100,8 @@ export function CampoHorario({ control, index, onEliminar, puedeEliminar }: Prop
             cancelTextIOS="Cancelar"
             locale="es-NI"
             pickerComponentStyleIOS={{ alignSelf: 'center'}}
-            modalStyleIOS={{ marginHorizontal: 16 }}
-            buttonTextColorIOS="#0F7C7C"/>
+            modalStyleIOS={{ marginHorizontal: 8 }}
+            buttonTextColorIOS="#374EA2"/>
 
 
             {errorHora && <Text className="text-red-600 text-sm mb-2">{errorHora}</Text>}
@@ -114,10 +114,10 @@ export function CampoHorario({ control, index, onEliminar, puedeEliminar }: Prop
                             key={dia.valor}
                             onPress={() => alternarDia(dia.valor)}
                             className={`w-10 h-10 rounded-full items-center justify-center ${
-                                activo ? 'bg-teal-700' : 'bg-slate-200'
+                                activo ? 'bg-primary' : 'bg-surface-raised'
                             }`}
                         >
-                            <Text className={activo ? 'text-white font-semibold' : 'text-slate-600'}>
+                            <Text className={activo ? 'font-lexend-bold text-content-on-primary' : 'font-lexend'}>
                                 {dia.letra}
                             </Text>
                         </Pressable>

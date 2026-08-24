@@ -12,7 +12,7 @@ import { CampoHorario } from "@/features/medicamentos/CampoHorario"
 import { CampoSelect } from "@/components/CampoSelect"
 import TopBar from "@/components/TopBar"
 import { View, Text, ActivityIndicator, ScrollView, Pressable, KeyboardAvoidingView, Platform } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { buscarPorId } from "@/state/consultas"
 import { eliminarTomasFuturasPendientes } from "@/state/tomas-acciones"
 import { color } from "@/theme/colors";
@@ -22,8 +22,7 @@ export default function EditarMedicamentoScreen() {
     const {medicacionId} = useLocalSearchParams()
     const medicacion = useValue(medicamentos$)
     const item = buscarPorId(medicacion, medicacionId as string)
-
-    
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const { control, handleSubmit, formState: { errors } } = useForm<MedicamentoForm>({
@@ -99,14 +98,14 @@ export default function EditarMedicamentoScreen() {
                 <TopBar name='Editar medicamento' canGoBack={true}/>
             </SafeAreaView>
 
-        <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+        <KeyboardAvoidingView className="flex-1 bg-surface-raised" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+
             <ScrollView
-                className="flex-grow bg-white"
+                className="flex-grow bg-surface-raised"
                 contentContainerStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 20,
                     paddingTop: 20,
-                    paddingBottom: 120
                 }}
                 keyboardShouldPersistTaps="handled"
             >
@@ -128,7 +127,7 @@ export default function EditarMedicamentoScreen() {
                 <CampoTexto name="indicaciones" control={control} title="Indicaciones del medico"
                     placeholder="Ej. Tomar con abundante agua" opcional/>
 
-                <Text className="text-lg font-semibold text-slate-900 mt-4 mb-3">Horarios</Text>
+                <Text className="font-lexend mt-4 mb-3">Horarios</Text>
 
                 {fields.map((field, index) => (
                     <CampoHorario
@@ -149,22 +148,23 @@ export default function EditarMedicamentoScreen() {
                 <Pressable
                     onPress={() => append({ hora: '20:00', dias: TODOS_LOS_DIAS })}
                     disabled={fields.length >= 6}
-                    className={`border rounded-lg py-3 items-center mb-6 ${
-                        fields.length >= 6 ? 'border-slate-200' : 'border-teal-700'
+                    className={`py-3 mb-6 ${
+                        fields.length >= 6 ? 'border-surface' : ''
                     }`}
                 >
-                    <Text className={fields.length >= 6 ? 'text-slate-400' : 'text-teal-700'}>
+                    <Text className={`font-lexend-bold text-label ${fields.length >= 6 ? 'text-content-disabled' : 'text-primary'}`}>
                         {fields.length >= 6 ? 'Maximo 6 horarios' : '+ Agregar horario'}
                     </Text>
                 </Pressable>
-
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    className="bg-black py-4 rounded-lg">
-                    <Text className="text-white text-center">
-                        {isSubmitting ? "Guardando..." : "Guardar medicamento"}
-                    </Text>
-                </Pressable>
             </ScrollView>
+
+            <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+            style={{ marginBottom: insets.bottom + 12 + 49 }}
+                className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
+                <Text className="font-lexend text-center text-content-on-primary">
+                    {isSubmitting ? "Guardando..." : "Guardar medicamento"}
+                </Text>
+            </Pressable>
         </KeyboardAvoidingView>
         </View>
     )

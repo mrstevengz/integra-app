@@ -40,7 +40,9 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/Lexend_Font.ttf"
+            "./assets/fonts/LexendDeca-Black.ttf",
+            "./assets/fonts/LexendDeca-Bold.ttf",
+            "./assets/fonts/LexendDeca-Regular.ttf"
           ]
         }
       ],

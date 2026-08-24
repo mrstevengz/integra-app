@@ -9,12 +9,12 @@ import {
   index,
   date,
   pgEnum,
-  integer,
   numeric,
-  time,
   unique,
   jsonb,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
+
 //Roles de supabase
 import {
   anonRole,
@@ -356,10 +356,10 @@ export const tomas = pgTable(
   },
   (table) => [
     //Hace imposible duplicar una dosis, sin importar cuantas veces corra el generador
-    unique("tomas_medicamento_programada_unq").on(
-      table.medicamento_id,
-      table.programada_para,
-    ),
+    uniqueIndex("tomas_medicamento_programada_unq")
+      .on(table.medicamento_id, table.programada_para)
+      .where(sql`${table.deleted} = false`),
+
     index("tomas_perfil_programada_idx").on(
       table.perfil_id,
       table.programada_para,

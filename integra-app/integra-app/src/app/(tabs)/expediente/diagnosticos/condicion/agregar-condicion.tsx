@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useValue } from "@legendapp/state/react"
 import { router } from "expo-router"
 import { useForm } from "react-hook-form"
-import { ActivityIndicator, Pressable, ScrollView, Text } from "react-native"
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text } from "react-native"
 import { View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Crypto from 'expo-crypto';
 import { useState } from "react"
 import { crearId } from "@/lib/ids"
@@ -18,6 +18,7 @@ import { color } from "@/theme/colors"
 
 export default function AgregarCondicionScreen() {
     const perfil = useValue(perfil$)
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {control, handleSubmit, reset} = useForm<CondicionesForm>({
@@ -70,20 +71,27 @@ export default function AgregarCondicionScreen() {
                 <TopBar name='Agregar condicion' canGoBack={true}/>
             </SafeAreaView>
 
-            <ScrollView contentContainerClassName="flex-1 px-6 py-6">
-                <CampoTexto name="nombre" control={control} title="Nombre de la condicion"/>
+            <KeyboardAvoidingView className="flex-1 bg-slate-100" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView
+                    className="flex-grow bg-slate-100"
+                    contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20, paddingTop: 20 }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <CampoTexto name="nombre" control={control} title="Nombre de la condicion"/>
 
-                <CampoSelect name="tipo" control={control} title="Tipo de condicion" opciones={TIPO_CONDICION}/>
+                    <CampoSelect name="tipo" control={control} title="Tipo de condicion" opciones={TIPO_CONDICION}/>
 
-                <CampoTexto name="detalles" control={control} title="Detalles de la condicion (opcional)"/>
+                    <CampoTexto name="detalles" control={control} title="Detalles de la condicion (opcional)"/>
+                </ScrollView>
 
                 <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                className="bg-black py-4 rounded-lg">
-                    <Text className="text-white text-center">
+                    style={{ marginBottom: insets.bottom + 12 + 49 }}
+                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
+                    <Text className="font-lexend text-center text-content-on-primary">
                         {isSubmitting? "Guardando..." : "Guardar condicion"}
                     </Text>
                 </Pressable>
-            </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     )
 }

@@ -1,0 +1,2 @@
+ALTER TABLE "tomas" DROP CONSTRAINT "tomas_medicamento_programada_unq";--> statement-breakpoint
+CREATE UNIQUE INDEX "tomas_medicamento_programada_unq" ON "tomas" USING btree ("medicamento_id","programada_para") WHERE "tomas"."deleted" = false;

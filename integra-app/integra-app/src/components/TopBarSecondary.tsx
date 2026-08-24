@@ -34,7 +34,7 @@ export default function TopBarSecondary({ active, tab1, tab2, route1, route2 }: 
             }`}
           >
             <Text className={`text-label ${
-              t.esActiva ? "font-bold text-content" : "font-medium text-content-muted"
+              t.esActiva ? "font-lexend-bold" : "text-content-muted"
             }`}>
               {t.texto}
             </Text>
