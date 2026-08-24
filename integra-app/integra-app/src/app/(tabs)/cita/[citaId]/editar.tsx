@@ -16,10 +16,11 @@ import { CampoTexto } from "@/components/CampoTexto"
 import TopBar from "@/components/TopBar"
 
 //Aviso a pantalla completa, para los dos casos en que no se puede editar.
+//Esta funcion puede ser helper, se podria implementar como componente.
 function Aviso({texto}: {texto: string}) {
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar cita' canGoBack={true}/>
             </SafeAreaView>
             <View className="flex-1 justify-center items-center px-6">
@@ -101,18 +102,19 @@ export default function EditarCita() {
     )
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar cita' canGoBack={true}/>
             </SafeAreaView>
 
-            <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <ScrollView
-                    className="flex-grow bg-white"
+                    className="flex-grow"
                     contentContainerStyle={{
                         flexGrow: 1,
                         paddingHorizontal: 20,
                         paddingTop: 20,
+                        paddingBottom: insets.bottom + 12 + 49,
                     }}
                     keyboardShouldPersistTaps="handled"
                 >
@@ -137,15 +139,14 @@ export default function EditarCita() {
 
                     <CampoTexto name="notas" control={control} title="Notas / Instrucciones previas" opcional={true} placeholder="Ej. Acudir en ayunas"/>
 
-                </ScrollView>
 
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    style={{ marginBottom: insets.bottom + 12 + 49 }}
-                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
-                    <Text className="font-lexend text-center text-content-on-primary">
-                        {isSubmitting ? "Guardando..." : "Guardar cambios"}
-                    </Text>
-                </Pressable>
+                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
+                            {isSubmitting ? "Guardando..." : "Guardar cambios"}
+                        </Text>
+                    </Pressable>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

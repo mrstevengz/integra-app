@@ -66,14 +66,19 @@ export default function EditarCondicion() {
     }
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar' canGoBack={true}/>
             </SafeAreaView>
-            <KeyboardAvoidingView className="flex-1 bg-slate-100" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <ScrollView
-                    className="flex-grow bg-slate-100"
-                    contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20, paddingTop: 20 }}
+                    className="flex-grow"
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingHorizontal: 20,
+                        paddingTop: 20,
+                        paddingBottom: insets.bottom + 12 + 49,
+                    }}
                     keyboardShouldPersistTaps="handled"
                 >
                     <CampoTexto name="nombre" control={control} title="Nombre de la condicion"/>
@@ -81,15 +86,14 @@ export default function EditarCondicion() {
                     <CampoSelect name="tipo" control={control} title="Tipo de condicion" opciones={TIPO_CONDICION}/>
 
                     <CampoTexto name="detalles" control={control} title="Detalles de la condicion (opcional)"/>
-                </ScrollView>
 
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    style={{ marginBottom: insets.bottom + 12 + 49 }}
-                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
-                    <Text className="font-lexend text-center text-content-on-primary">
-                        {isSubmitting? "Guardando..." : "Guardar condicion"}
-                    </Text>
-                </Pressable>
+                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
+                            {isSubmitting? "Guardando..." : "Guardar condicion"}
+                        </Text>
+                    </Pressable>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

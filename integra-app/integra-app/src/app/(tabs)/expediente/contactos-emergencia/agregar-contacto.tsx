@@ -53,8 +53,8 @@ export default function AgregarAlergiaScreen() {
     }
 
      if (!perfil.id || !contactosEmergencia$) return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar contacto de emergencia' canGoBack={true}/>
             </SafeAreaView>
             <View className="flex-1 items-center justify-center">
@@ -64,15 +64,20 @@ export default function AgregarAlergiaScreen() {
     )
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar contacto' canGoBack={true}/>
             </SafeAreaView>
 
-            <KeyboardAvoidingView className="flex-1 bg-slate-100" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <ScrollView
-                    className="flex-grow bg-slate-100"
-                    contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20, paddingTop: 20 }}
+                    className="flex-grow"
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingHorizontal: 20,
+                        paddingTop: 20,
+                        paddingBottom: insets.bottom + 12 + 49,
+                    }}
                     keyboardShouldPersistTaps="handled"
                 >
                     <CampoTexto name="nombre" control={control} title="Nombre"/>
@@ -80,15 +85,14 @@ export default function AgregarAlergiaScreen() {
                     <CampoTexto name="telefono" control={control} title="Numero telefonico" keyboardType="phone-pad" telefono={true}/>
 
                     <CampoSelect name="relacion" control={control} title="Tipo de relacion" opciones={TIPO_RELACION}/>
-                </ScrollView>
 
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    style={{ marginBottom: insets.bottom + 12 + 49 }}
-                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
-                    <Text className="font-lexend text-center text-content-on-primary">
-                        {isSubmitting? "Guardando..." : "Guardar contacto"}
-                    </Text>
-                </Pressable>
+                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
+                            {isSubmitting? "Guardando..." : "Guardar contacto"}
+                        </Text>
+                    </Pressable>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

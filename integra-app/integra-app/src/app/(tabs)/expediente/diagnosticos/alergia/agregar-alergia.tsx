@@ -54,8 +54,8 @@ export default function AgregarAlergiaScreen() {
     }
 
      if (!perfil.id) return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar alergia' canGoBack={true}/>
             </SafeAreaView>
             <View className="flex-1 items-center justify-center">
@@ -65,31 +65,35 @@ export default function AgregarAlergiaScreen() {
     )
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar alergia' canGoBack={true}/>
             </SafeAreaView>
 
-            <KeyboardAvoidingView className="flex-1 bg-slate-100" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <ScrollView
-                    className="flex-grow bg-slate-100"
-                    contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20, paddingTop: 20 }}
+                    className="flex-grow"
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingHorizontal: 20,
+                        paddingTop: 20,
+                        paddingBottom: insets.bottom + 12 + 49,
+                    }}
                     keyboardShouldPersistTaps="handled"
                 >
                     <CampoTexto name="nombre" control={control} title="Nombre de la alergia"/>
 
                     <CampoSelect name="severidad" control={control} title="Severidad de la alergia" opciones={SEVERIDAD_ALERGIA}/>
 
-                    <CampoTexto name="detalles" control={control} title="Detalles de la alergia (opcional)"/>
-                </ScrollView>
+                    <CampoTexto name="detalles" control={control} title="Detalles de la alergia" opcional={true}/>
 
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    style={{ marginBottom: insets.bottom + 12 + 49 }}
-                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
-                    <Text className="font-lexend text-center text-content-on-primary">
-                        {isSubmitting? "Guardando..." : "Guardar alergia"}
-                    </Text>
-                </Pressable>
+                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
+                            {isSubmitting? "Guardando..." : "Guardar alergia"}
+                        </Text>
+                    </Pressable>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

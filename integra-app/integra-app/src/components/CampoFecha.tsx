@@ -30,9 +30,12 @@ export function CampoFecha<T extends FieldValues>({
     const error = fieldState.error?.message
     //Estado para manejar si esta abierto o no
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+
+    //Variables de estado para la fecha y el tiempo, se utilizan para mostrar el valor en pantalla sin cambiarlo.
     const [tempDate, setTempDate] = useState(field.value ?? new Date(2000, 0, 1))
     const [tempTime, setTempTime] = useState(field.value ?? new Date())
 
+    //Maneja si el picker esta abierto o no, si es de tiempo, se usa tempTime, y viceversa.
     const abrirPicker = () => {
     if (mode === 'time') {
         setTempTime(field.value ?? new Date())
@@ -40,13 +43,15 @@ export function CampoFecha<T extends FieldValues>({
         setTempDate(field.value ?? new Date(2000, 0, 1))
     }
     setIsDatePickerOpen(true)
-}
+    }
 
+    //Funcion helper para manejar el modal que se abre solamente en IOS
     const confirmarIOS = () => {
     field.onChange(mode === 'time' ? tempTime : tempDate)
     setIsDatePickerOpen(false)
     }
 
+    //Funcion helper para manejar el boton de cancelar del modal, en IOS
     const cancelarIOS = () => setIsDatePickerOpen(false)
     
     return (

@@ -14,6 +14,7 @@ import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
 import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
 
+//Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
     paddingTop: 20,
     paddingBottom: 120,

@@ -3,7 +3,6 @@ import { router } from "expo-router"
 import { ChevronLeft } from "lucide-react-native"
 import { ReactNode } from "react"
 import { Pressable, Text, View } from "react-native"
-import { BlurView } from 'expo-blur';
 
 
 //Topbar para todas las pantallas de la aplicacion. Aqui se puede modificar. Acepta el titulo y un booleano, para permitir retornar o no. (En las pantallas principales de (tabs) no se retorna)

@@ -1,6 +1,5 @@
 import { Control, FieldValues, Path, useController } from "react-hook-form";
-import { View, Text, Pressable } from "react-native";
-import { useState } from "react";
+import { View, Text} from "react-native";
 import ModalPicker from 'rn-modal-picker'
 
 //Componente generico que exporta un picker (dropdown para escoger opciones)
@@ -59,7 +58,7 @@ export function CampoSelect<T extends FieldValues>({
                     backgroundColor: '#ffffff',
                 }}
 
-                selectedTextStyle={{ color: '#0f172a', fontSize: 14, textAlign: 'left', fontFamily: 'Lexend' }}
+                selectedTextStyle={{ color: '#0f172a', fontSize: 16, textAlign: 'left', fontFamily: 'Lexend' }}
                 listTextStyle={{ color: '#0f172a', fontSize: 18, fontFamily: 'Lexend' }}
                 itemSeparatorStyle={{ backgroundColor: '#e2e8f0' }}
                 dropDownIconStyle={{ tintColor: '#64748b', width: 20, height: 15 }}

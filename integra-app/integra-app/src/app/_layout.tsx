@@ -21,12 +21,14 @@ export function ErrorBoundary({error, retry}: ErrorBoundaryProps) {
 }
 
 export default function RootLayout() {
+  //Inicializa los fonts en assets
   const [fuentesListas] = useFonts({
   "LexendDeca-Regular": require("../../assets/fonts/LexendDeca-Regular.ttf"),
   "LexendDeca-Bold": require("../../assets/fonts/LexendDeca-Bold.ttf"),
   "LexendDeca-Black": require("../../assets/fonts/LexendDeca-Black.ttf"),
 });
 
+  //Inicializa la sesion y el estado, y maneja cuando se esta cargando, cerrando sesion para cargar las pantallas solo cuando ya esten inicializados con informacion.
   const perfil = useValue(perfil$)
   const cargando = useValue(auth$.cargando)
   const cerrandoSesion = useValue(auth$.cerrandoSesion)

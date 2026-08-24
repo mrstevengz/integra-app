@@ -8,6 +8,7 @@ import {
   mediciones$,
   tiposMedicion$,
   TipoMedicion,
+  medicionesDeTipo,
 } from "@/state/mediciones";
 import { useValue } from "@legendapp/state/react";
 import { router, useLocalSearchParams } from "expo-router";
@@ -22,50 +23,23 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { color } from "@/theme/colors";
-
-type Estado = "bajo" | "normal" | "elevado";
-
-function calcularEstado(valor: number, tipo?: TipoMedicion): Estado | null {
-  if (!tipo) return null;
-  if (valor < tipo.rango_min) return "bajo";
-  if (valor > tipo.rango_max) return "elevado";
-  return "normal";
-}
-
-const ETIQUETA_ESTADO: Record<Estado, string> = {
-  bajo: "BAJO",
-  normal: "NORMAL",
-  elevado: "ELEVADO",
-};
-
-const ESTILO_ESTADO: Record<Estado, { texto: string; icono: string }> = {
-  bajo: { texto: "text-warning-on-subtle", icono: "bg-warning" },
-  normal: { texto: "text-success-on-subtle", icono: "bg-success" },
-  elevado: { texto: "text-warning-on-subtle", icono: "bg-warning" },
-};
-
-function labelContexto(contexto: string | null) {
-  const map: Record<string, string> = {
-    en_ayunas: "En ayunas",
-    despues_comer: "Despues de comer",
-    antes_dormir: "Antes de dormir",
-    en_reposo: "En reposo",
-    despues_ejercicio: "Despues de ejercicio",
-    otro: "Otro",
-  };
-  return contexto ? (map[contexto] ?? "—") : "—";
-}
+import EstadoMedicionBarra, { calcularEstado, labelContexto } from "@/features/mediciones/EstadoMedicion";
+import GraficaMedicion from "@/features/mediciones/GraficaMediciones";
+import { perfil$ } from "@/state/usuario";
 
 export default function DetalleMedicion() {
   const { medicionId } = useLocalSearchParams();
+  const perfil = useValue(perfil$)
   const mediciones = useValue(mediciones$);
   const tipos = useValue(tiposMedicion$);
 
   const medicionAEditar = buscarPorId(mediciones, medicionId as string);
   const tipo = buscarPorId(tipos, medicionAEditar?.tipo_medicion_id ?? "");
   const date = new Date(medicionAEditar?.medido_en ?? new Date());
+  const medicionesTipo = medicionesDeTipo(mediciones, tipo!.id, perfil.id)
 
   const doble = tipo ? esDoble(tipo) : false;
+  
   const estado =
     medicionAEditar && !doble
       ? calcularEstado(medicionAEditar.valor, tipo)
@@ -115,22 +89,8 @@ export default function DetalleMedicion() {
               </Text>
             </View>
 
-            {estado && (
-              <View className="flex-row items-center justify-between rounded-control bg-surface-raised border border-line px-4 py-3">
-                <View className="flex-row items-center gap-2">
-                  <View
-                    className={`w-3.5 h-3.5 rounded-[3px] ${ESTILO_ESTADO[estado].icono}`}
-                  />
-                  <Text
-                    className={`text-label font-bold ${ESTILO_ESTADO[estado].texto}`}
-                  >
-                    {ETIQUETA_ESTADO[estado]}
-                  </Text>
-                </View>
-                <Text className="text-caption text-content-muted">
-                  {tipo?.rango_min}-{tipo?.rango_max} {tipo?.unidad}
-                </Text>
-              </View>
+            {estado && tipo && (
+              <EstadoMedicionBarra estado = {estado} tipo = {tipo}/>
             )}
           </View>
 
@@ -163,6 +123,15 @@ export default function DetalleMedicion() {
                 {medicionAEditar?.nota ? medicionAEditar.nota : "Sin nota"}
               </Text>
             </View>
+          </View>
+
+          <Pressable onPress={() => router.navigate({pathname: "/medicion/[medicionTipo]/evolucion", params: {medicionTipo: tipo!.id}})}>
+            <Text className="font-lexend">Contexto temporal</Text>
+            </Pressable>
+          <View className="items-center w-full">
+          {tipo && medicionesTipo && 
+            <GraficaMedicion tipo={tipo} medicionesTipo={medicionesTipo}/>
+          }
           </View>
 
           {/* Acciones */}

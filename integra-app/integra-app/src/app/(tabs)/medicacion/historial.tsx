@@ -10,11 +10,11 @@ import { GlassView } from "expo-glass-effect";
 import { router } from "expo-router";
 
 export default function HistorialMedicamentos() {
-        const perfil = useValue(perfil$)
+    const perfil = useValue(perfil$)
     
-        const medicamentos = useValue(medicamentos$)
+    const medicamentos = useValue(medicamentos$)
     
-        const lista = medicamentosActivos(medicamentos, perfil?.id)
+    const lista = medicamentosActivos(medicamentos, perfil?.id)
     
     return (
         <View className="flex-1">

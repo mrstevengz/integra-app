@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useValue } from "@legendapp/state/react";
@@ -21,10 +21,21 @@ export default function VigenciaScreen() {
     const perfil = useValue(perfil$)
     const borrador = useValue(borradorExportacion$)
 
+    //Crea una vigencia por defecto de 7 dias.
     const [vigencia, setVigencia] = useState<Vigencia>('7d')
     const [generando, setGenerando] = useState(false)
 
-    if (!perfil.id) return <PantallaCargando titulo="Vigencia del acceso" />
+    if (!perfil.id) return ( 
+        <View className="flex-1">
+            <SafeAreaView edges={['top']} className="bg-slate-100">
+                <TopBar name='Mi Expediente' canGoBack={false}/>
+            </SafeAreaView>
+            
+            <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color={color.primary}/>
+            </View> 
+        </View>
+        )
 
     if (!haySeccionesElegidas(borrador.secciones)) {
         return (
@@ -41,6 +52,7 @@ export default function VigenciaScreen() {
         )
     }
 
+    //Funcion principal que genera la exportacion, manda a llamar la funcion de crearExportacion y le pasa los datos del borrador, el id del perfil y la vigencia que se scoge en esta pantalla. Luego reinicia el borrador, y manda al usuario a la pantalla con el QR.
     function generar() {
         if (generando) return
         setGenerando(true)

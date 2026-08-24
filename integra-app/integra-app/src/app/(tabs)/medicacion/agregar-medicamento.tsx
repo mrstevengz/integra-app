@@ -69,8 +69,8 @@ export default function AgregarMedicamentoScreen() {
 }
 
     if (!perfil?.id) return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar medicamento' canGoBack={true}/>
             </SafeAreaView>
             <View className="flex-1 items-center justify-center">
@@ -80,18 +80,19 @@ export default function AgregarMedicamentoScreen() {
     )
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Agregar medicamento' canGoBack={true}/>
             </SafeAreaView>
 
-        <KeyboardAvoidingView className="flex-1 bg-surface" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+        <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
             <ScrollView
-                className="flex-grow bg-surface"
+                className="flex-grow"
                 contentContainerStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 20,
                     paddingTop: 20,
+                    paddingBottom: insets.bottom + 12 + 49,
                 }}
                 keyboardShouldPersistTaps="handled"
             >
@@ -142,15 +143,14 @@ export default function AgregarMedicamentoScreen() {
                         {fields.length >= 6 ? 'Maximo 6 horarios' : '+ Agregar horario'}
                     </Text>
                 </Pressable>
-            </ScrollView>
 
-            <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                style={{ marginBottom: insets.bottom + 12 + 49 }}
-                className="bg-primary active:bg-primary-pressed p-4 rounded-control mx-5 mt-3 mb-4">
-                <Text className="font-lexend text-center text-content-on-primary">
-                    {isSubmitting ? "Guardando..." : "Guardar medicamento"}
-                </Text>
-            </Pressable>
+                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                    className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                    <Text className="font-lexend text-center text-content-on-primary">
+                        {isSubmitting ? "Guardando..." : "Guardar medicamento"}
+                    </Text>
+                </Pressable>
+            </ScrollView>
         </KeyboardAvoidingView>
         </View>
     )
