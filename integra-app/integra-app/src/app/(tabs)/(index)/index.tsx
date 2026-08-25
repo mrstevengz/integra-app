@@ -3,7 +3,7 @@ import TopBar from "@/components/TopBar";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useValue } from "@legendapp/state/react";
-import { perfil$ } from "@/state/usuario";
+import { conseguirIniciales, perfil$ } from "@/state/usuario";
 import { tomas$, tomasDelDia, tomasVigentesDelDia } from "@/state/tomas";
 import { ProximaToma } from "@/features/medicamentos/ProximaToma";
 import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
@@ -15,6 +15,8 @@ import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
 import { medicamentos$ } from "@/state/medicamentos";
 import { ProgresoDelDia } from "@/features/medicamentos/ProgresoDelDia";
+import { urlPublica } from '@/lib/almacenamiento'
+import AvatarPerfil from "@/features/perfil/AvatarPerfil";
 
 //Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
@@ -60,7 +62,12 @@ export default function HomeScreen() {
             grande
             subtitulo={`${new Date().toLocaleDateString('es-CR', {weekday: 'long'})}, ${new Date().getDate()} de ${new Date().toLocaleString('es-ES', {month: 'long'})}`}
             accion={() => router.navigate("/expediente")}
-            accionIcono={<User size={30} color={color.primary}/>}
+            accionIcono={<AvatarPerfil
+                    perfilId={perfil.id}
+                    avatarPath={perfil.avatar_path}
+                    iniciales={conseguirIniciales(perfil)}
+                    tamano={45}
+                />}
             />
         </SafeAreaView>
 

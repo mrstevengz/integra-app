@@ -2,7 +2,7 @@ import { View, ActivityIndicator, ScrollView, Pressable, Text, KeyboardAvoidingV
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import TopBar from "@/components/TopBar";
 import { useValue } from "@legendapp/state/react";
-import { perfil$ } from "@/state/usuario";
+import { conseguirIniciales, perfil$ } from "@/state/usuario";
 import { useForm } from "react-hook-form";
 import { PerfilForm, perfilSchema } from "@/features/perfil/perfil-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,7 @@ import { CampoSelect } from "@/components/CampoSelect";
 import { router } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { color } from "@/theme/colors";
+import AvatarPerfil from "@/features/perfil/AvatarPerfil";
 
 export default function PerfilScreen() {
     const perfil = useValue(perfil$)
@@ -79,9 +80,14 @@ export default function PerfilScreen() {
                     }}
                     keyboardShouldPersistTaps="handled">
                 
-                <TouchableOpacity className="w-28 h-28 rounded-full flex items-center justify-center bg-slate-300 m-auto mb-8">
-                    <Ionicons name="person-sharp" size={40}/>
-                </TouchableOpacity>
+                <View className="mb-8">
+                    <AvatarPerfil
+                    perfilId={perfil.id}
+                    avatarPath={perfil.avatar_path}
+                    iniciales={conseguirIniciales(perfil)}
+                    editable
+                    />
+                </View>
 
                 <CampoTexto
                 name="nombre" control = {control} title="Nombre"

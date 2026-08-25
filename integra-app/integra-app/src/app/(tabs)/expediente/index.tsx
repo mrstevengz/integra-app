@@ -66,7 +66,7 @@ export default function ExpedienteScreen() {
 
         <ScrollView className="flex-grow bg-slate-100" contentContainerStyle={{paddingBottom: 100, paddingTop: 15 }}>
 
-          <PerfilSummary nombre={nombre} edad={perfil.fecha_nacimiento ? edadEnAnios(perfil.fecha_nacimiento) : null} genero={perfil.genero} cedula={perfil.cedula}/>
+          <PerfilSummary perfil={perfil}/>
 
           {expedienteIncompleto && (
               <Pressable className="mt-3 p-4 px-5 bg-slate-200 border-l-2 border-slate-700 text-slate-500"
@@ -118,10 +118,9 @@ export default function ExpedienteScreen() {
 
           <PerfilBox titulo="Contactos de Emergencia" link="/expediente/contactos-emergencia" linkName="Agregar">
             {contactos.map((contacto) => (
-              <ContactoEmergencia key={contacto.id} nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono}  
-              onPress={() => router.navigate({
-              pathname: '/expediente/contactos-emergencia',
-                    })}/>
+              <Pressable key={contacto.id} onPress={() => router.navigate('/expediente/contactos-emergencia')}>
+              <ContactoEmergencia  nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono} />
+              </Pressable>
             ))}
           </PerfilBox>
 

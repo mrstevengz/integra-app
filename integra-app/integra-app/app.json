@@ -31,6 +31,12 @@
     },
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "Integra necesita acceso a tus fotos para que puedas elegir una foto de perfil."
+        }
+      ],
+      [
         "expo-router",
         {
           "root": "src/app"
@@ -47,8 +53,7 @@
         }
       ],
       "expo-sqlite",
-      "@react-native-community/datetimepicker",
-      "expo-font"
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
