@@ -176,6 +176,13 @@
       "when": 1787529886747,
       "tag": "0024_nosy_groot",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1787691851278,
+      "tag": "0025_third_vampiro",
+      "breakpoints": true
     }
   ]
 }

@@ -16,6 +16,7 @@
     "@react-native-picker/picker": "2.11.1",
     "@supabase/supabase-js": "^2.112.2",
     "babel-preset-expo": "~54.0.10",
+    "base64-arraybuffer": "^1.0.2",
     "expo": "~54.0.35",
     "expo-blur": "~15.0.8",
     "expo-brightness": "~14.0.8",
@@ -23,6 +24,7 @@
     "expo-crypto": "~15.0.9",
     "expo-font": "~14.0.12",
     "expo-glass-effect": "~0.1.10",
+    "expo-image-picker": "~17.0.11",
     "expo-linking": "~8.0.12",
     "expo-print": "~15.0.8",
     "expo-router": "~6.0.24",
@@ -63,5 +65,8 @@
       "expo-sqlite": "$expo-sqlite"
     }
   },
-  "private": true
+  "private": true,
+  
+  "db:generate": "drizzle-kit generate",
+  "db:migrate": "drizzle-kit migrate"
 }

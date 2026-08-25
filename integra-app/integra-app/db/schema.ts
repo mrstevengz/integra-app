@@ -94,6 +94,7 @@ export const perfiles = pgTable(
     telefono: text("telefono"),
     tipoSangre: tipoSangreEnum("tipo_sangre"),
     medicoTratante: text("medico_tratante"),
+    avatarPath: text("avatar_path"),
 
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
