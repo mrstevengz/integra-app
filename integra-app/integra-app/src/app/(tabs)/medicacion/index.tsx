@@ -5,7 +5,7 @@ import { router, useFocusEffect } from "expo-router"
 import { useValue } from "@legendapp/state/react"
 import TopBar from "@/components/TopBar"
 import { medicamentos$, medicamentosActivos } from "@/state/medicamentos";
-import { tomasDelDia, tomas$, agruparTomasPorHora } from "@/state/tomas";
+import { tomasDelDia, tomas$, agruparTomasPorHora, tomasVigentesDelDia } from "@/state/tomas";
 import { useCallback, useEffect } from "react"
 import { perfil$ } from "@/state/usuario"
 import { generarTomasPendientes } from "@/state/tomas-generar"
@@ -24,7 +24,7 @@ export default function MedicacionScreen() {
     const lista = medicamentosActivos(medicamentos, perfil?.id)
 
     //Tomas de hoy
-    const hoy = tomasDelDia(tomas, new Date(), perfil?.id)
+    const hoy = tomasVigentesDelDia(tomas, medicamentos, new Date(), perfil?.id)
 
     //Todas las Tomas sin resolver (no especifica al grupo)
     const sinResolver = hoy.filter(
@@ -70,26 +70,28 @@ export default function MedicacionScreen() {
 
 
             <ScrollView
-                className="flex-grow bg-surface-raised"
+                className="flex-grow"
                 contentContainerStyle={{ paddingTop: 20, paddingBottom: 80 }}
             >
 
-                <View className=" flex flex-col px-6 my-4">
-                    <View className="flex-row justify-between mb-2">
-                        <Text className="text-label text-content-muted">Progreso del dia</Text>
-                        <Text className = "text-label font-semibold text-content">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis tomadas` : `No hay dosis programadas para hoy`}</Text>
+                {hoy.length === 0 ? null : (
+                    <View className=" flex flex-col">
+                        <View className="flex-row justify-between mb-2 px-6">
+                            <Text className="text-label text-content-muted font-lexend">Progreso del dia</Text>
+                            <Text className = "font-lexend-bold">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis` : `No hay dosis programadas para hoy`}</Text>
+                        </View>
+                        <View className="h-1 w-full overflow-hidden rounded-card bg-surface">
+                            <View className="h-full bg-success" style={{
+                                 width: `${hoy.length > 0 ? (tomasResueltas / hoy.length) * 100 : 0}%`
+                            }}/>
+                        </View>
+                        
                     </View>
-                    <View className="h-4 w-full overflow-hidden rounded-3xl bg-surface">
-                        <View className="h-full bg-primary" style={{
-                             width: `${hoy.length > 0 ? (tomasResueltas / hoy.length) * 100 : 0}%`
-                        }}/>
-                    </View>
-                    
-                </View>
-
+                )}
+               
                 {hoy.length === 0 ? (
                     <View className="mx-6 mb-8 rounded-card border border-dashed border-line-strong bg-surface-raised px-5 py-8 items-center">
-                        <Text className="text-body text-content-muted text-center">
+                        <Text className="text-body text-content-muted text-center font-lexend">
                             No hay dosis programadas para hoy.
                         </Text>
                     </View>
@@ -97,7 +99,7 @@ export default function MedicacionScreen() {
                     <View className="mb-8">
                     {grupos.length === 0 ? (
                     <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                        <Text className="text-body text-content-muted">
+                        <Text className="text-body text-content-muted font-lexend">
                             No hay dosis programadas para hoy.
                         </Text>
                     </View>

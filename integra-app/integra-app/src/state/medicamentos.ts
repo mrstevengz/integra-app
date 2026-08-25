@@ -55,6 +55,15 @@ export function medicamentosActivos(
         .sort(porNombre)
 }
 
+export function medicamentosInactivos(
+    todos: Record<string, Medicamento> | undefined, perfilId: string | undefined,
+): Medicamento[] {
+    return delPerfil(todos, perfilId)
+        .filter((m) => m.activo === false)
+        .sort(porNombre)
+}
+
+
 //Retorna los horarios ordenados de un medicamento especifico.
 export function horariosOrdenados(m: Medicamento): HorarioMed[] {
     return [...m.horarios].sort((a, b) => a.hora.localeCompare(b.hora))
@@ -68,3 +77,4 @@ export function formatearDias(dias: number[]): string {
     const letras = ['D', 'L', 'K', 'M', 'J', 'V', 'S']
     return [...dias].sort((a, b) => a - b).map((d) => letras[d]).join(', ')
 }
+

@@ -55,7 +55,7 @@ export default function HistorialMediciones() {
           return (
             <Pressable
               key={m.id}
-              className="p-6 justify-between flex flex-row items-center border-b border-slate-400 bg-bg-color"
+              className="p-6 justify-between flex flex-row items-center border-b border-slate-400 bg-surface-raised active:bg-surface-sunken"
               onPress={() =>
                 router.navigate({
                   pathname: "/medicion/[medicionId]",

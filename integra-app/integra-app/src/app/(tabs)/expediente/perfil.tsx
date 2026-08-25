@@ -1,5 +1,5 @@
 import { View, ActivityIndicator, ScrollView, Pressable, Text, KeyboardAvoidingView, Platform, TouchableOpacity} from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import TopBar from "@/components/TopBar";
 import { useValue } from "@legendapp/state/react";
 import { perfil$ } from "@/state/usuario";
@@ -15,6 +15,7 @@ import { color } from "@/theme/colors";
 
 export default function PerfilScreen() {
     const perfil = useValue(perfil$)
+    const insets = useSafeAreaInsets()
 
     const {control, handleSubmit, formState: {isDirty}, reset} = useForm<PerfilForm>({
         resolver: zodResolver(perfilSchema),
@@ -49,8 +50,8 @@ export default function PerfilScreen() {
     }
 
     if (!perfil) return (
-    <View className="flex-1">
-        <SafeAreaView edges={['top']} className="bg-slate-100">
+    <View className="flex-1 bg-surface">
+        <SafeAreaView edges={['top']} className="bg-surface">
             <TopBar name='Mi Expediente' canGoBack={false}/>
         </SafeAreaView>
         <View className="flex-1 items-center justify-center">
@@ -62,19 +63,19 @@ export default function PerfilScreen() {
     
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Datos personales' canGoBack={true}/>
             </SafeAreaView>
 
         <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <ScrollView
-                    className="flex-grow bg-slate-100"
+                    className="flex-grow"
                     contentContainerStyle={{
                         flexGrow: 1,
                         paddingHorizontal: 20,
                         paddingTop: 20,
-                        paddingBottom: 120,
+                        paddingBottom: insets.bottom + 12 + 49,
                     }}
                     keyboardShouldPersistTaps="handled">
                 
@@ -97,7 +98,7 @@ export default function PerfilScreen() {
                 <CampoTexto
                 name="telefono" control = {control} title="Numero telefonico" 
                 keyboardType="phone-pad"
-                autoComplete="tel"
+                autoComplete="tel" telefono={true}
                 />
 
                 <CampoSelect name="tipoSangre" control={control} title="Tipo de sangre" opciones={TIPOS_SANGRE}/>
@@ -110,14 +111,14 @@ export default function PerfilScreen() {
                 name="medicoTratante" control = {control} title="Medico Tratante"
                 />
 
+
                 <Pressable
                 onPress={handleSubmit(onSubmit)}
                 disabled={!isDirty}
-                className={`bg-black py-4 rounded-lg ${!isDirty && 'bg-black/40'}`}
+                className={`p-4 rounded-control mt-6 ${isDirty ? 'bg-primary active:bg-primary-pressed' : 'bg-content-disabled'}`}
                 >
-                    <Text className="text-white text-center">Guardar cambios</Text>
+                    <Text className="font-lexend text-center text-content-on-primary">Guardar cambios</Text>
                 </Pressable>
-
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>

@@ -5,14 +5,12 @@ export type ContactoEmergenciaProps = {
     nombre: string;
     relacion: string
     telefono: string
-    onPress: () => void
 }
 
 //Fila que genera el contacto de emergencia. Recibe nombre, relacion y telefono (datos de la tabla) y una funcion que se le pasa en la pantalla
-export default function ContactoEmergencia({nombre, relacion, telefono, onPress}: ContactoEmergenciaProps) {
+export default function ContactoEmergencia({nombre, relacion, telefono}: ContactoEmergenciaProps) {
     return (
-         <Pressable className="flex flex-row items-center gap-3 p-4 px-5 bg-white border-b-2 border-black/20 active:bg-slate-200"
-            onPress={onPress}>
+         <Pressable className="flex flex-row items-center gap-3 p-4 px-5 bg-white border-b-2 border-black/20 active:bg-slate-200">
             <Ionicons size={28} name="person-circle"/>
         
             <View className="flex-1">

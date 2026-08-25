@@ -1,6 +1,5 @@
 import { Control, FieldValues, Path, useController } from "react-hook-form";
-import { View, Text, Pressable } from "react-native";
-import { useState } from "react";
+import { View, Text} from "react-native";
 import ModalPicker from 'rn-modal-picker'
 
 //Componente generico que exporta un picker (dropdown para escoger opciones)
@@ -38,13 +37,13 @@ export function CampoSelect<T extends FieldValues>({
 
     return (
         <View className="mb-4">
-            <Text className="mb-2 text-lg">{title}</Text>
+            <Text className="mb-2 font-lexend-bold">{title}</Text>
 
             <ModalPicker
                 data={datos}
                 value={seleccionada?.etiqueta ?? ''}
                 onChange={(item: OpcionPicker) => field.onChange(item.valor)}
-                animationType="slide"
+                animationType="fade"
                 hideSearchBar={opciones.length < 8}
                 placeHolderText={''}
                 placeHolderTextColor="#94a3b8"
@@ -53,19 +52,19 @@ export function CampoSelect<T extends FieldValues>({
                     borderWidth: 1,
                     borderColor: error ? '#f87171' : '#cbd5e1',
                     borderRadius: 8,
-                    paddingHorizontal: 14,
+                    paddingHorizontal: 8,
                     paddingVertical: 14,
                     alignItems: 'center',
                     backgroundColor: '#ffffff',
                 }}
 
-                selectedTextStyle={{ color: '#0f172a', fontSize: 16, textAlign: 'left' }}
-                listTextStyle={{ color: '#0f172a', fontSize: 18 }}
+                selectedTextStyle={{ color: '#0f172a', fontSize: 16, textAlign: 'left', fontFamily: 'Lexend' }}
+                listTextStyle={{ color: '#0f172a', fontSize: 18, fontFamily: 'Lexend' }}
                 itemSeparatorStyle={{ backgroundColor: '#e2e8f0' }}
-                dropDownIconStyle={{ tintColor: '#64748b', width: 20, height: 12 }}
+                dropDownIconStyle={{ tintColor: '#64748b', width: 20, height: 15 }}
             />
 
-            {error && <Text className="text-red-600 text-sm mt-1">{error}</Text>}
+            {error && <Text className="text-warning mt-1">{error}</Text>}
         </View>
         
     )

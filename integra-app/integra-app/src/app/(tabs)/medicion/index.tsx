@@ -15,7 +15,7 @@ import TopBarSecondary from "@/components/TopBarSecondary";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
-function getIconForMedicion(nombre: string): IconName {
+function obtenerIconodeMedicion(nombre: string): IconName {
   const n = nombre.toLowerCase();
 
   if (n.includes("peso")) return "scale-outline";
@@ -24,21 +24,24 @@ function getIconForMedicion(nombre: string): IconName {
     n.includes("presión") ||
     n.includes("tension") ||
     n.includes("tensión")
-  )
-    return "heart-outline";
+  ) return "heart-outline";
+
   if (n.includes("frecuencia") || n.includes("pulso") || n.includes("ritmo"))
     return "pulse-outline";
+
   if (n.includes("glucosa") || n.includes("azucar") || n.includes("azúcar"))
     return "water-outline";
+
   if (n.includes("temperatura")) return "thermometer-outline";
+
   if (
     n.includes("oxigeno") ||
     n.includes("oxígeno") ||
     n.includes("saturacion") ||
     n.includes("saturación") ||
     n.includes("spo2")
-  )
-    return "fitness-outline";
+  ) return "fitness-outline";
+
   if (n.includes("talla") || n.includes("altura") || n.includes("imc"))
     return "body-outline";
 
@@ -47,7 +50,6 @@ function getIconForMedicion(nombre: string): IconName {
 
 export default function MedicionScreen() {
   const mediciones = tiposOrdenados(useValue(tiposMedicion$));
-  const tipos = useValue(tiposMedicion$);
 
   return (
     <View className="flex-1">
@@ -81,7 +83,7 @@ export default function MedicionScreen() {
             >
               <View className="p-2 rounded-lg bg-slate-200 border-slate-300 border">
                 <Ionicons
-                  name={getIconForMedicion(medicion.nombre)}
+                  name={obtenerIconodeMedicion(medicion.nombre)}
                   size={20}
                   color={"#475569"}
                 />

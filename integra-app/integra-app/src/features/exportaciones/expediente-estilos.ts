@@ -4,7 +4,7 @@ export const ESTILOS = `
   @page { margin: 40px; }
   * { box-sizing: border-box; }
   body {
-    margin: 0; color: #191F29; font-size: 10px; line-height: 1.45;
+    margin: 0; padding: 40px; color: #191F29; font-size: 10px; line-height: 1.45;
     font-family: -apple-system, "Helvetica Neue", Roboto, sans-serif;
   }
 

@@ -9,17 +9,18 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { View, Text, KeyboardAvoidingView, Platform, Pressable, ScrollView } from "react-native"
 import { combinarFechaHora } from "@/lib/fechas";
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { CampoFecha } from "@/components/CampoFecha"
 import { CampoSelect } from "@/components/CampoSelect"
 import { CampoTexto } from "@/components/CampoTexto"
 import TopBar from "@/components/TopBar"
 
 //Aviso a pantalla completa, para los dos casos en que no se puede editar.
+//Esta funcion puede ser helper, se podria implementar como componente.
 function Aviso({texto}: {texto: string}) {
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar cita' canGoBack={true}/>
             </SafeAreaView>
             <View className="flex-1 justify-center items-center px-6">
@@ -40,6 +41,7 @@ export default function EditarCita() {
 
     const date = citaAEditar ? new Date(citaAEditar.programada_para) : new Date()
 
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {control, handleSubmit, reset} = useForm<CitaForm>({
@@ -100,19 +102,19 @@ export default function EditarCita() {
     )
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar cita' canGoBack={true}/>
             </SafeAreaView>
 
             <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                 <ScrollView
-                    className="flex-grow bg-white"
+                    className="flex-grow"
                     contentContainerStyle={{
                         flexGrow: 1,
                         paddingHorizontal: 20,
                         paddingTop: 20,
-                        paddingBottom: 120
+                        paddingBottom: insets.bottom + 12 + 49,
                     }}
                     keyboardShouldPersistTaps="handled"
                 >
@@ -137,13 +139,13 @@ export default function EditarCita() {
 
                     <CampoTexto name="notas" control={control} title="Notas / Instrucciones previas" opcional={true} placeholder="Ej. Acudir en ayunas"/>
 
+
                     <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                        className="bg-black py-4 rounded-lg active:bg-black/50">
-                        <Text className="text-white text-center">
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
                             {isSubmitting ? "Guardando..." : "Guardar cambios"}
                         </Text>
                     </Pressable>
-
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>

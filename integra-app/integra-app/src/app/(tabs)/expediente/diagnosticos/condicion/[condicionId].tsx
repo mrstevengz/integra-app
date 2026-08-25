@@ -2,8 +2,8 @@ import { condiciones$} from "@/state/condiciones";
 import { buscarPorId } from "@/state/consultas";
 import { router, useLocalSearchParams } from "expo-router";
 import { useValue } from "@legendapp/state/react";
-import { View, Text, Pressable, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import TopBar from "@/components/TopBar";
 import { CondicionesForm, condicionesSchema, TIPO_CONDICION } from "@/features/condiciones/condiciones-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,7 @@ import { CampoSelect } from "@/components/CampoSelect";
 
 export default function EditarCondicion() {
     const {condicionId} = useLocalSearchParams()
+    const insets = useSafeAreaInsets()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const condicionesLista = useValue(condiciones$)
     const item = buscarPorId(condicionesLista, condicionId as string)
@@ -65,24 +66,35 @@ export default function EditarCondicion() {
     }
 
     return (
-        <View className="flex-1">
-            <SafeAreaView edges={['top']} className="bg-slate-100">
+        <View className="flex-1 bg-surface">
+            <SafeAreaView edges={['top']} className="bg-surface">
                 <TopBar name='Editar' canGoBack={true}/>
             </SafeAreaView>
-            <ScrollView contentContainerClassName="flex-1 px-6 py-6">
-                <CampoTexto name="nombre" control={control} title="Nombre de la condicion"/>
-            
-                <CampoSelect name="tipo" control={control} title="Tipo de condicion" opciones={TIPO_CONDICION}/>
-            
-                <CampoTexto name="detalles" control={control} title="Detalles de la condicion (opcional)"/>
-            
-                <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
-                    className="bg-black py-4 rounded-lg">
-                    <Text className="text-white text-center">
-                        {isSubmitting? "Guardando..." : "Guardar condicion"}
-                    </Text>
-                </Pressable>
-            </ScrollView>
+            <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView
+                    className="flex-grow"
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingHorizontal: 20,
+                        paddingTop: 20,
+                        paddingBottom: insets.bottom + 12 + 49,
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <CampoTexto name="nombre" control={control} title="Nombre de la condicion"/>
+
+                    <CampoSelect name="tipo" control={control} title="Tipo de condicion" opciones={TIPO_CONDICION}/>
+
+                    <CampoTexto name="detalles" control={control} title="Detalles de la condicion (opcional)"/>
+
+                    <Pressable onPress={handleSubmit(onSubmit)} disabled={isSubmitting}
+                        className="bg-primary active:bg-primary-pressed p-4 rounded-control mt-6">
+                        <Text className="font-lexend text-center text-content-on-primary">
+                            {isSubmitting? "Guardando..." : "Guardar condicion"}
+                        </Text>
+                    </Pressable>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     )
 }

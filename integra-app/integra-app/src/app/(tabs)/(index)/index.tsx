@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useValue } from "@legendapp/state/react";
 import { perfil$ } from "@/state/usuario";
-import { tomas$, tomasDelDia } from "@/state/tomas";
+import { tomas$, tomasDelDia, tomasVigentesDelDia } from "@/state/tomas";
 import { ProximaToma } from "@/features/medicamentos/ProximaToma";
 import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
 import { buscarPorId } from "@/state/consultas";
@@ -13,11 +13,14 @@ import ProximaCita from "@/features/citas/ProximaCita";
 import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
 import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
+import { medicamentos$ } from "@/state/medicamentos";
+import { ProgresoDelDia } from "@/features/medicamentos/ProgresoDelDia";
 
+//Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
     paddingTop: 20,
     paddingBottom: 120,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
 }
 
 export default function HomeScreen() {
@@ -25,7 +28,9 @@ export default function HomeScreen() {
     
 
     const tomas = useValue(tomas$)
-    const tomasDeHoy = tomasDelDia(tomas, new Date(), perfil?.id)
+    const medicamentos = useValue(medicamentos$)
+    const tomasDeHoy = tomasVigentesDelDia(tomas, medicamentos, new Date(), perfil?.id)
+    
     const sinResolver = tomasDeHoy.filter(
         (t) => t.estado === 'pendiente' || t.estado === 'pospuesta'
     )
@@ -33,7 +38,6 @@ export default function HomeScreen() {
     const tomasResueltas = tomasDeHoy.length - sinResolver.length
 
     const hoy = new Date()
-    const day = new Intl.DateTimeFormat('es-ni', {weekday: "long"}).format(hoy)
 
     const mediciones = useValue(mediciones$)
     const tipos = useValue(tiposMedicion$)
@@ -48,8 +52,8 @@ export default function HomeScreen() {
     const medicionComponente = medicionesHistorial.slice(0, 2)
     
   return (
-    <View className="flex-1 bg-slate-100">
-        <SafeAreaView edges={['top']} className="bg-slate-100">
+    <View className="flex-1 bg-surface">
+        <SafeAreaView edges={['top']} className="bg-surface">
             <TopBar
             name={`Hola, ${perfil.nombre}`}
             canGoBack={false}
@@ -61,34 +65,23 @@ export default function HomeScreen() {
         </SafeAreaView>
 
        <ScrollView
-                className="flex-grow bg-slate-100"
+                className="flex-grow bg-surface"
                 contentContainerStyle={estilosScrollView}
         >
 
             <ProximaToma tomas = {tomasDeHoy}/>
 
-            <View className="flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm mt-4">
-                <View className="flex-row justify-between mb-2">
-                    <Text className="font-semibold font-lexend">Progreso del dia</Text>
-                    <Text className="font-semibold font-lexend">{tomasDeHoy.length !== 0 ? `${tomasResueltas} de ${tomasDeHoy.length} tomados` : `No hay tomas hoy`}</Text>
-                </View>
-
-                <View className="h-4 w-full overflow-hidden bg-neutral-color rounded-3xl">
-                    <View className="h-full bg-sec-color rounded-lg" style={{
-                        width: `${(tomasResueltas/tomasDeHoy.length)* 100}%`
-                    }}/>
-                </View>
-            </View>
+            <ProgresoDelDia tomasDeHoy ={tomasDeHoy} tomasResueltas={tomasResueltas}/>
 
             <ProximaCita citasProximas={citasProximasLista}/>
 
              <View className="flex-row items-center justify-between my-5">
-                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
+                <Text className="text-heading font-lexend">
                     Ultimas mediciones
                 </Text>
             
                 <Pressable onPress={() => router.push('/medicion')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-neutral-400 text-md font-medium font-lexend">Ver todas</Text>
+                    <Text className="text-body text-primary font-lexend-bold tracking-heading">Ver todas</Text>
                 </Pressable>
             </View>
 
@@ -104,23 +97,23 @@ export default function HomeScreen() {
                     const medidoEn = new Date(m.medido_en)
 
                     return (
-                        <Pressable className="flex-col flex-1 justify-start rounded-2xl bg-white p-4 shadow-sm active:bg-white/80" key={m.id} onPress={() => router.navigate('/medicion/historial')}>
-                            <Text className="text-btn-color font-light font-lexend">{t?.nombre}</Text>
-                            <Text className="text-2xl font-bold font-lexend">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}</Text>
-                            <Text className="text-txt-color font-bold font-lexend">{t?.unidad}</Text>
-                            <Text className="text-slate-400 font-lexend">{medidoEn.toDateString().slice(4, 10)} {medidoEn.toTimeString().slice(0,5)}</Text>
+                        <Pressable className="flex-col flex-1 gap-2 justify-start rounded-card bg-surface-raised p-4 shadow-sm active:bg-surface-sunken" key={m.id} onPress={() => router.navigate('/medicion/historial')}>
+                            <Text className="font-lexend text-content-subtle">{t?.nombre}</Text>
+                            <Text className="font-lexend-bold text-title tracking-tighter">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}</Text>
+                            <Text className="font-lexend text-primary-pressed">{t?.unidad}</Text>
+                            <Text className="font-lexend text-primary-on-subtle">{medidoEn.toDateString().slice(4, 10)} {medidoEn.toTimeString().slice(0,5)}</Text>
                         </Pressable>
                     )
                 }))}
             </View>
 
             <View className="flex-row items-center justify-between my-5">
-                <Text className="text-btn-color text-md font-semibold uppercase tracking-wider font-lexend">
+                <Text className="text-heading font-lexend">
                     Articulos Destacados
                 </Text>
             
                 <Pressable onPress={() => router.push('/articulos')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-neutral-400 text-md font-medium font-lexend">Ver todos</Text>
+                    <Text className="text-body text-primary font-lexend-bold tracking-heading">Ver todos</Text>
                 </Pressable>
 
                 

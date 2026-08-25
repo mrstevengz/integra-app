@@ -1,10 +1,13 @@
+import { estilosScrollView } from "@/app/(tabs)/(index)";
+import EstadoMedicionBarra, { calcularEstado } from "@/features/mediciones/EstadoMedicion";
+import { formatearFecha, formatearHora } from "@/lib/fechas";
 import { buscarPorId } from "@/state/consultas";
 import { mediciones$, tiposMedicion$, esDoble } from "@/state/mediciones";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useValue } from "@legendapp/state/react";
 import { router, useLocalSearchParams } from "expo-router";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ResultadoMedicion() {
@@ -14,7 +17,13 @@ export default function ResultadoMedicion() {
 
     const medicion = buscarPorId(mediciones, resultadoMedicion as string)
     const tipo = buscarPorId(tipos, medicion?.tipo_medicion_id ?? "")
+    const doble = tipo ? esDoble(tipo) : false;
 
+    const estado =
+        medicion && !doble
+          ? calcularEstado(medicion.valor, tipo)
+          : null;
+    
      if (!medicion || !tipo) {
             return (
                 <View className="flex-1 justify-center items-center px-6">
@@ -42,7 +51,12 @@ export default function ResultadoMedicion() {
                 </View>
 
             </SafeAreaView>
-            <View className="flex flex-col items-center mt-8 gap-4 px-6">
+
+            <ScrollView
+                className="flex-grow bg-surface"
+                contentContainerStyle={estilosScrollView}
+            >
+            <View className="flex flex-col items-center mt-8 gap-4">
 
                 <View className="w-24 h-24 rounded-full border-2 items-center justify-center border-slate-500 mb-4">
                     <Ionicons name="checkmark-outline" size={40} color={"#64748b"}/>
@@ -50,7 +64,7 @@ export default function ResultadoMedicion() {
 
                 <Text className="text-3xl font-bold">Medicion registrada</Text>
 
-                <Text className="text-md color-slate-600">{`Hoy, ${medicion.medido_en.toDateString()} ⋅ ${medicion.medido_en.toTimeString().slice(0,8)}`} {labelHelper(medicion.contexto)}</Text>
+                <Text className="text-md color-slate-600">{`${formatearFecha(new Date(medicion.medido_en), {conAnio: true})} ⋅ ${formatearHora(new Date(medicion.medido_en))}`} ⋅  {labelHelper(medicion.contexto)}</Text>
 
                 <View className="items-center justify-center border border-slate-500 bg-white w-full rounded-xl py-4 mt-4">
                     <Text className="text-slate-500">{tipo?.nombre.toUpperCase()}</Text>
@@ -60,8 +74,14 @@ export default function ResultadoMedicion() {
                     <Text className="text-slate-600 text-2xl">{tipo?.unidad}</Text>
                 </View>
 
-
-
+                <View className="w-full gap-2">
+                    <Text className="font-lexend">
+                        Rangos de referencia
+                    </Text>
+                    {estado && tipo && (
+                        <EstadoMedicionBarra estado = {estado} tipo = {tipo}/>
+                    )}
+                </View>
 
                 {/* //Valores de referencia view */}
             <View className="justify-between bg-slate-200/80 w-full gap-2 rounded-xl p-2">
@@ -89,36 +109,37 @@ export default function ResultadoMedicion() {
             </View>
 
 
-                <View className="flex-row gap-4 flex">
-                    <Pressable className="p-4 border rounded-xl"
+                <View className="flex-row w-full gap-4 flex">
+                    <Pressable className=" flex-1 p-4 border rounded-xl items-center bg-surface-raised"
                     onPress={() => router.navigate({
                         pathname: '/medicion/[medicionTipo]/evolucion',
                         params: {medicionTipo: tipo.id}
                     })}>
-                        <Text>Ver evolucion</Text>
+                        <Text className="font-lexend">Ver evolucion</Text>
                     </Pressable>
 
                     <Pressable onPress={() => router.navigate({
                         pathname: '/medicion/[medicionId]/editar',
                         params: {medicionId: medicion.id}
-                    })} className="p-4 border rounded-xl">
-                        <Text>Editar</Text>
+                    })} className="flex-1 p-4 border rounded-xl items-center bg-surface-raised">
+                        <Text className="font-lexend">Editar</Text>
                     </Pressable>
                 </View>
                 
             </View>
+            </ScrollView>
         </View>
     )
 }
 
 export function labelHelper(contexto: string | null) {
-    if (contexto === null) return ''
+    if (contexto === null) return 'Sin contexto'
     if (contexto === 'en_ayunas') return 'En ayunas'
     if (contexto === 'despues_comer') return 'Despues de comer'
     if (contexto === 'antes_dormir') return 'Antes de dormir'
     if (contexto === 'en_reposo') return 'En reposo'
     if (contexto === 'despues_ejercicio') return 'Despues de ejercicio'
-    if (contexto === 'otro') return ''
+    if (contexto === 'otro') return 'Sin contexto'
 
     return ''
 }
