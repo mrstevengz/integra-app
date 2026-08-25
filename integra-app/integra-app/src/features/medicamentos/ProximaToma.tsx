@@ -80,6 +80,7 @@ export function ProximaToma({ tomas }: ComponenteProps) {
   }
 
   return (
+    <>
     <View className="w-full">
       <View className="flex-row items-center justify-between mb-3">
         <Text className="text-heading font-lexend">
@@ -175,5 +176,8 @@ export function ProximaToma({ tomas }: ComponenteProps) {
         </>
       )}
     </View>
+
+    
+    </>
   );
 }

@@ -14,6 +14,7 @@ import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
 import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
 import { medicamentos$ } from "@/state/medicamentos";
+import { ProgresoDelDia } from "@/features/medicamentos/ProgresoDelDia";
 
 //Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
@@ -70,18 +71,7 @@ export default function HomeScreen() {
 
             <ProximaToma tomas = {tomasDeHoy}/>
 
-            <View className="flex-col gap-4 rounded-card border border-surface-raised bg-surface-raised p-4 shadow-sm mt-4">
-                <View className="flex-row justify-between mb-2">
-                    <Text className="font-lexend text-content-muted text-label tracking-wide">Progreso del dia</Text>
-                    <Text className=" font-lexend text-subheading">{tomasDeHoy.length !== 0 ? `${tomasResueltas} de ${tomasDeHoy.length}` : `No hay tomas hoy`}</Text>
-                </View>
-
-                <View className="h-2 w-full overflow-hidden bg-neutral-color rounded-3xl">
-                    <View className="h-full rounded-lg bg-success" style={{
-                        width: `${(tomasResueltas/tomasDeHoy.length)* 100}%`
-                    }}/>
-                </View>
-            </View>
+            <ProgresoDelDia tomasDeHoy ={tomasDeHoy} tomasResueltas={tomasResueltas}/>
 
             <ProximaCita citasProximas={citasProximasLista}/>
 

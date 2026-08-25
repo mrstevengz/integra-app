@@ -36,7 +36,8 @@ export default function DetalleMedicion() {
   const medicionAEditar = buscarPorId(mediciones, medicionId as string);
   const tipo = buscarPorId(tipos, medicionAEditar?.tipo_medicion_id ?? "");
   const date = new Date(medicionAEditar?.medido_en ?? new Date());
-  const medicionesTipo = medicionesDeTipo(mediciones, tipo!.id, perfil.id)
+  const medicionesTipo = tipo ? medicionesDeTipo(mediciones, tipo.id, perfil.id) : [];
+
 
   const doble = tipo ? esDoble(tipo) : false;
   
@@ -155,7 +156,7 @@ export default function DetalleMedicion() {
               onPress={() => {
                 deleteAlert(() => {
                   mediciones$[id].delete();
-                  router.back();
+                  router.navigate("/medicion/historial");
                 });
               }}
             >

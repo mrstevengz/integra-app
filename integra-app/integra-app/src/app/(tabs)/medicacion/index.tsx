@@ -74,22 +74,24 @@ export default function MedicacionScreen() {
                 contentContainerStyle={{ paddingTop: 20, paddingBottom: 80 }}
             >
 
-                <View className=" flex flex-col">
-                    <View className="flex-row justify-between mb-2 px-6">
-                        <Text className="text-label text-content-muted font-lexend">Progreso del dia</Text>
-                        <Text className = "font-lexend-bold">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis` : `No hay dosis programadas para hoy`}</Text>
+                {hoy.length === 0 ? null : (
+                    <View className=" flex flex-col">
+                        <View className="flex-row justify-between mb-2 px-6">
+                            <Text className="text-label text-content-muted font-lexend">Progreso del dia</Text>
+                            <Text className = "font-lexend-bold">{hoy.length !== 0 ? `${tomasResueltas} de ${hoy.length} dosis` : `No hay dosis programadas para hoy`}</Text>
+                        </View>
+                        <View className="h-1 w-full overflow-hidden rounded-card bg-surface">
+                            <View className="h-full bg-success" style={{
+                                 width: `${hoy.length > 0 ? (tomasResueltas / hoy.length) * 100 : 0}%`
+                            }}/>
+                        </View>
+                        
                     </View>
-                    <View className="h-1 w-full overflow-hidden rounded-card bg-surface">
-                        <View className="h-full bg-success" style={{
-                             width: `${hoy.length > 0 ? (tomasResueltas / hoy.length) * 100 : 0}%`
-                        }}/>
-                    </View>
-                    
-                </View>
-
+                )}
+               
                 {hoy.length === 0 ? (
                     <View className="mx-6 mb-8 rounded-card border border-dashed border-line-strong bg-surface-raised px-5 py-8 items-center">
-                        <Text className="text-body text-content-muted text-center">
+                        <Text className="text-body text-content-muted text-center font-lexend">
                             No hay dosis programadas para hoy.
                         </Text>
                     </View>
@@ -97,7 +99,7 @@ export default function MedicacionScreen() {
                     <View className="mb-8">
                     {grupos.length === 0 ? (
                     <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                        <Text className="text-body text-content-muted">
+                        <Text className="text-body text-content-muted font-lexend">
                             No hay dosis programadas para hoy.
                         </Text>
                     </View>

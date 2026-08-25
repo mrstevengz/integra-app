@@ -111,7 +111,7 @@ export default function GraficaMedicion({medicionesTipo, tipo}: GraficaMedicionP
                 </View>
             )}
             {medicionesTipo.length === 1 && (
-                <View className="mx-5 mb-2 items-center rounded-card border border-line bg-surface-raised px-5 py-8">
+                <View className="mb-2 items-center rounded-card border border-line bg-surface-raised px-5 py-8">
                     <Text className="text-caption text-content-subtle">
                         {formatearFecha(new Date(medicionesTipo[0].medido_en))}
                     </Text>

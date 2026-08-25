@@ -34,17 +34,21 @@ export default function HistorialMedicamentos() {
         className="flex-grow bg-surface"
         contentContainerStyle={{ paddingBottom: 80 }}>
 
-            <View className="p-4 border-b border-line flex-row px-6 bg-surface">
-                <Text className="font-lexend flex-1 text-label text-content-muted">Activos</Text>
-                <Text className="font-lexend-bold text-label text-content-muted">{lista.length}</Text>
-            </View>
+            {lista.length === 0 ? null : (
+
+                <View className="p-4 border-b border-line flex-row px-6 bg-surface">
+                    <Text className="font-lexend flex-1 text-label text-content-muted">Activos</Text>
+                    <Text className="font-lexend-bold text-label text-content-muted">{lista.length}</Text>
+                </View>
             
+            )}
+           
             {lista.length === 0 && (
-            <View className="mx-6 mb-6 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                <Text className="text-neutral-500 text-sm text-center">
-                    Todavia no has agregado medicamentos.
-                </Text>
-            </View>
+                <View className="mx-6 my-6 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
+                    <Text className="text-body text-content-muted font-lexend">
+                        Todavia no has agregado medicamentos.
+                    </Text>
+                </View>
             )}
                     
             {lista.map((item) => (
