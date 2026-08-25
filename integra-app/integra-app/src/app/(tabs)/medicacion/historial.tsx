@@ -1,7 +1,7 @@
 import MedicinasLista from "@/features/medicamentos/MedicinasLista";
 import TopBarSecondary from "@/components/TopBarSecondary";
 import TopBar from "@/components/TopBar";
-import { medicamentos$, medicamentosActivos } from "@/state/medicamentos";
+import { medicamentos$, medicamentosActivos, medicamentosInactivos } from "@/state/medicamentos";
 import { perfil$ } from "@/state/usuario";
 import { useValue } from "@legendapp/state/react";
 import { ScrollView, View, Text, TouchableOpacity, Platform } from "react-native";
@@ -15,6 +15,7 @@ export default function HistorialMedicamentos() {
     const medicamentos = useValue(medicamentos$)
     
     const lista = medicamentosActivos(medicamentos, perfil?.id)
+    const suspendidos = medicamentosInactivos(medicamentos, perfil?.id)
     
     return (
         <View className="flex-1">
@@ -32,6 +33,11 @@ export default function HistorialMedicamentos() {
         <ScrollView
         className="flex-grow bg-surface"
         contentContainerStyle={{ paddingBottom: 80 }}>
+
+            <View className="p-4 border-b border-line flex-row px-6 bg-surface">
+                <Text className="font-lexend flex-1 text-label text-content-muted">Activos</Text>
+                <Text className="font-lexend-bold text-label text-content-muted">{lista.length}</Text>
+            </View>
             
             {lista.length === 0 && (
             <View className="mx-6 mb-6 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
@@ -40,10 +46,25 @@ export default function HistorialMedicamentos() {
                 </Text>
             </View>
             )}
-            
+                    
             {lista.map((item) => (
             <MedicinasLista key = {item.id} {...item}/>
             ))}
+
+            {suspendidos.length > 0 && (
+                <View className="p-4 border-b border-line flex-row px-6 bg-surface">
+                    <Text className="font-lexend flex-1 text-label text-content-muted">Suspendidos</Text>
+                    <Text className="font-lexend-bold text-label text-content-muted">{suspendidos.length}</Text>
+                </View>            
+            )}
+
+            {suspendidos.map((item) => (
+            <MedicinasLista key={item.id} {...item}/>
+            ))}
+
+           
+
+
         </ScrollView>
 
         <GlassView

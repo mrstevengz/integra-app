@@ -5,7 +5,7 @@ import { router, useFocusEffect } from "expo-router"
 import { useValue } from "@legendapp/state/react"
 import TopBar from "@/components/TopBar"
 import { medicamentos$, medicamentosActivos } from "@/state/medicamentos";
-import { tomasDelDia, tomas$, agruparTomasPorHora } from "@/state/tomas";
+import { tomasDelDia, tomas$, agruparTomasPorHora, tomasVigentesDelDia } from "@/state/tomas";
 import { useCallback, useEffect } from "react"
 import { perfil$ } from "@/state/usuario"
 import { generarTomasPendientes } from "@/state/tomas-generar"
@@ -24,7 +24,7 @@ export default function MedicacionScreen() {
     const lista = medicamentosActivos(medicamentos, perfil?.id)
 
     //Tomas de hoy
-    const hoy = tomasDelDia(tomas, new Date(), perfil?.id)
+    const hoy = tomasVigentesDelDia(tomas, medicamentos, new Date(), perfil?.id)
 
     //Todas las Tomas sin resolver (no especifica al grupo)
     const sinResolver = hoy.filter(

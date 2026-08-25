@@ -15,7 +15,7 @@ const ICONOS: Record<FormaFarmaceutica, typeof Pill> = {
     parche: Bandage,
 }
 
-export function iconoDeForma(forma: FormaFarmaceutica | undefined) {
+export function iconoDeForma(forma: FormaFarmaceutica | undefined, colorIcono: string = color.contentMuted) {
     const Icono = forma ? ICONOS[forma] : Pill
-    return <Icono color={color.primary}/>
+    return <Icono color={colorIcono}/>
 }

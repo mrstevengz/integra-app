@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useValue } from "@legendapp/state/react";
 import { perfil$ } from "@/state/usuario";
-import { tomas$, tomasDelDia } from "@/state/tomas";
+import { tomas$, tomasDelDia, tomasVigentesDelDia } from "@/state/tomas";
 import { ProximaToma } from "@/features/medicamentos/ProximaToma";
 import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
 import { buscarPorId } from "@/state/consultas";
@@ -13,6 +13,7 @@ import ProximaCita from "@/features/citas/ProximaCita";
 import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
 import { color } from "@/theme/colors";
 import { User } from "lucide-react-native";
+import { medicamentos$ } from "@/state/medicamentos";
 
 //Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
@@ -26,7 +27,9 @@ export default function HomeScreen() {
     
 
     const tomas = useValue(tomas$)
-    const tomasDeHoy = tomasDelDia(tomas, new Date(), perfil?.id)
+    const medicamentos = useValue(medicamentos$)
+    const tomasDeHoy = tomasVigentesDelDia(tomas, medicamentos, new Date(), perfil?.id)
+    
     const sinResolver = tomasDeHoy.filter(
         (t) => t.estado === 'pendiente' || t.estado === 'pospuesta'
     )
