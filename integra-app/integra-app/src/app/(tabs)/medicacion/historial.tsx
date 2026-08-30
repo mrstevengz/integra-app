@@ -4,18 +4,63 @@ import TopBar from "@/components/TopBar";
 import { medicamentos$, medicamentosActivos, medicamentosInactivos } from "@/state/medicamentos";
 import { perfil$ } from "@/state/usuario";
 import { useValue } from "@legendapp/state/react";
-import { ScrollView, View, Text, TouchableOpacity, Platform } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Platform, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlassView } from "expo-glass-effect";
 import { router } from "expo-router";
+import { CalendarPlus, Pill } from "lucide-react-native";
+import { color } from "@/theme/colors";
+import { delPerfil } from "@/state/consultas";
 
 export default function HistorialMedicamentos() {
     const perfil = useValue(perfil$)
     
     const medicamentos = useValue(medicamentos$)
+    const medicamentosLista = delPerfil(medicamentos, perfil.id)
     
     const lista = medicamentosActivos(medicamentos, perfil?.id)
     const suspendidos = medicamentosInactivos(medicamentos, perfil?.id)
+
+    if (medicamentosLista.length === 0) return (
+    <View className="flex-1 bg-surface">
+        <View className="absolute top-0 left-0 right-0 z-10">
+            <SafeAreaView edges={['top']} className="bg-surface">
+                <TopBar
+                    name="Medicación"
+                    canGoBack={false}
+                    grande
+                    subtitulo={`${new Date().toLocaleDateString('es-CR', {weekday: 'long'})}, ${new Date().getDate()} de ${new Date().toLocaleString('es-ES', {month: 'long'})}`}
+                />
+            </SafeAreaView>
+
+            <TopBarSecondary active="Medicamentos" tab1="Tomas" tab2="Medicamentos" route1="/medicacion" route2="/medicacion/historial"/>
+        </View>
+
+    
+        <View className="flex-1 items-center justify-center px-8">
+          <View className="flex-col gap-2 items-center">
+            <View className="w-32 h-32 rounded-full flex flex-col items-center overflow-hidden bg-primary-subtle border-primary-on-subtle border-2">
+           
+              <View className="flex-1 items-center justify-center">
+                <Pill
+                  color={color.primary}
+                  size={40} 
+                  strokeWidth={2} 
+                />
+              </View>
+          
+            </View>
+    
+            <Text className="font-lexend text-heading text-center">Sin medicamentos aun</Text>
+            <Text className="font-lexend text-label text-center text-content-muted">Agrega tus medicamentos y recibe recordatorios para cada dosis</Text>
+    
+            <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-chip mt-6 items-center" onPress={() => router.navigate("/medicacion/agregar-medicamento")}>
+              <Text className="font-lexend text-label text-white">Agregar medicamento</Text>
+            </Pressable>
+          </View>
+        </View>
+    </View>
+    )
     
     return (
         <View className="flex-1">
@@ -41,14 +86,6 @@ export default function HistorialMedicamentos() {
                     <Text className="font-lexend-bold text-label text-content-muted">{lista.length}</Text>
                 </View>
             
-            )}
-           
-            {lista.length === 0 && (
-                <View className="mx-6 my-6 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                    <Text className="text-body text-content-muted font-lexend">
-                        Todavia no has agregado medicamentos.
-                    </Text>
-                </View>
             )}
                     
             {lista.map((item) => (

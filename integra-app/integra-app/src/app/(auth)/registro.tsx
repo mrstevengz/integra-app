@@ -18,7 +18,7 @@ import { PASOS } from "@/features/auth/pasos";
 import { CampoTexto } from "@/components/CampoTexto";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Eye } from "lucide-react-native";
+import { Image } from "expo-image";
 
 export default function RegistroScreen() {
   const [paso, setPaso] = useState(0);
@@ -41,6 +41,7 @@ export default function RegistroScreen() {
     trigger,
     formState: { isLoading },
   } = useForm<RegistroForm>({
+    mode:"onChange",
     resolver: zodResolver(registroSchema),
     defaultValues: {
       nombre: "",
@@ -116,6 +117,8 @@ export default function RegistroScreen() {
             paddingBottom: 120,
           }}
         >
+         
+         
           <View className="flex-row gap-2 mb-8">
             {PASOS.map((_, i) => (
               <View
@@ -127,9 +130,16 @@ export default function RegistroScreen() {
             ))}
           </View>
 
-          <View>
-            <Text className="text-4xl font-bold mb-2">{actual.titulo}</Text>
-            <Text className="text-slate-500 mb-8">{actual.subtitulo}</Text>
+           <View className="items-center">
+             <Image
+              source={require("../../../assets/logos/icono.svg")}
+              style={{ width: 80, height: 80 }}
+            />
+          </View>
+
+          <View className="items-center">
+            <Text className="font-lexend-bold text-display">{actual.titulo}</Text>
+            <Text className="text-content-muted text-body mb-8 font-lexend">{actual.subtitulo}</Text>
           </View>
 
           {paso === 0 && (
@@ -207,8 +217,9 @@ export default function RegistroScreen() {
                 name="cedula"
                 control={control}
                 title="Cedula de identidad"
-                placeholder="(opcional)"
+                placeholder="xxx-xxxxxx-xxxxx"
                 autoComplete="off"
+                opcional={true}
               />
             </>
           )}
@@ -223,12 +234,12 @@ export default function RegistroScreen() {
           <View>
             <Pressable
               onPress={continuar}
-              className="border rounded-lg py-4 items-center mb-2 bg-black"
+              className="bg-primary active:bg-primary-pressed p-5 rounded-chip mt-6 items-center"
             >
               {isLoading ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text className="text-white font-semibold">
+                <Text className="font-lexend text-label text-white">
                   {esUltimo ? "Crear cuenta" : "Continuar"}
                 </Text>
               )}
@@ -244,9 +255,9 @@ export default function RegistroScreen() {
             {paso === 0 && (
               <Link
                 href="/login"
-                className="text-slate-700 text-center mt-3 underline "
+                className="font-lexend text-label text-center mt-4"
               >
-                ¿Ya tienes cuenta? Iniciar sesion
+                ¿Ya tienes cuenta? <Text className="font-lexend-bold">Iniciar sesion</Text>
               </Link>
             )}
           </View>

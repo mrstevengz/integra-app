@@ -54,8 +54,8 @@ export default function ProximaCita({ citasProximas }: ComponenteProps) {
 
       {!citaReciente ? (
         <View className="rounded-card border border-line bg-surface-raised p-5 items-center">
-          <Text className="text-neutral-500 text-sm font-lexend">
-            No tenés citas pendientes
+          <Text className="text-content-muted text-label font-lexend">
+            No hay citas pendientes
           </Text>
         </View>
       ) : (

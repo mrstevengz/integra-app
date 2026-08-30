@@ -14,16 +14,16 @@ import ContactoEmergencia from "@/features/contactos-emergencia/ContactoEmergenc
 import { checklistExpediente$ } from "@/state/checklist-expediente";
 import {QrCode} from "lucide-react-native";
 import { color } from "@/theme/colors";
-import { convertirALista } from "@/state/consultas";
+import { convertirALista, delPerfil } from "@/state/consultas";
 
 
 export default function ExpedienteScreen() {
     //Obtener datos de sesion y perfil
     const perfil = useValue(perfil$)
-    const condiciones = convertirALista(useValue(condiciones$))
-    const alergias = convertirALista(useValue(alergias$))
+    const condiciones = delPerfil(useValue(condiciones$), perfil.id)
+    const alergias = delPerfil(useValue(alergias$), perfil.id)
 
-    const contactos = convertirALista(useValue(contactosEmergencia$))
+    const contactos = delPerfil(useValue(contactosEmergencia$), perfil.id)
     const confirmadas = useValue(checklistExpediente$)
 
     
@@ -124,8 +124,8 @@ export default function ExpedienteScreen() {
             ))}
           </PerfilBox>
 
-          <Pressable onPress={cerrarSesion} className="border border-red-300 rounded-lg py-3 mt-4 items-center">
-            <Text>Cerrar sesion</Text>
+          <Pressable onPress={cerrarSesion} className="border border-danger-subtle items-center bg-red-500/60 p-4 mx-4 rounded-card mt-8">
+            <Text className="font-lexend-bold text-danger">Cerrar sesion</Text>
           </Pressable>
         </ScrollView>
     </View>

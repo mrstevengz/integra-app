@@ -2,7 +2,14 @@ import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Image } from "expo-image";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { LoginForm, loginSchema } from "../../features/auth/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -40,62 +47,75 @@ export default function LoginScreen() {
   }
 
   return (
-    <View className="flex-1 justify-center px-6">
-      <View className="flex justify-center items-center">
-        <View>
-          <Image
-            source={require("../../../assets/icon.svg")}
-            style={{ width: 100, height: 100 }}
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={undefined}
+
+    >
+      <ScrollView
+        className="flex-grow bg-white"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: 20,
+          paddingTop: 30,
+          paddingBottom: 80,
+        }}
+      >
+        <View className="flex-1 justify-center">
+          <View className="items-center mb-8">
+            <Image
+              source={require("../../../assets/logos/icono.svg")}
+              style={{ width: 100, height: 100 }}
+            />
+            <Text className="text-display font-bold my-2 font-lexend-bold">Bienvenido a Integra</Text>
+            <Text className="text-slate-500 font-lexend text-body">
+              Tu expediente medico siempre contigo
+            </Text>
+          </View>
+
+          <CampoTexto
+            control={control}
+            name="email"
+            title="Correo electronico"
+            placeholder="Ingresa tu correo electronico"
+            keyboardType="email-address"
+            autoComplete="email"
           />
+
+          <CampoTexto
+            control={control}
+            name="password"
+            title="Contraseña"
+            placeholder="Ingresa tu contraseña"
+            autoComplete="new-password"
+            secureTextEntry={mostrarContrasenia}
+            presionarIcono={() => toggleMostrar()}
+            esContrasenia={true}
+          />
+
+          {error && <Text className="text-red-600 text-sm mb-3">{error}</Text>}
+
+          <Pressable
+            onPress={handleSubmit(onSubmit)}
+            disabled={cargando}
+            className="bg-primary active:bg-primary-pressed p-5 rounded-chip mt-6 items-center"
+          >
+            {cargando ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text className="font-lexend text-label text-white">Iniciar sesion</Text>
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={() => router.push("/registro")}
+            className="mt-4 items-center"
+          >
+            <Text className="font-lexend text-label">¿No tienes cuenta? <Text className="font-lexend-bold">Crea una</Text></Text>
+          </Pressable>
         </View>
-        <Text className="text-4xl font-bold mb-2">Bienvenido a Integra</Text>
-        <Text className="text-slate-500 mb-8">
-          Tu expediente medico siempre contigo
-        </Text>
-      </View>
 
-      <View>
-        <CampoTexto
-          control={control}
-          name="email"
-          title="Correo electronico"
-          placeholder="Ingresa tu correo electronico"
-          keyboardType="email-address"
-          autoComplete="email"
-        />
-
-        <CampoTexto
-          control={control}
-          name="password"
-          title="Contraseña"
-          placeholder="Ingresa tu contraseña"
-          autoComplete="new-password"
-          secureTextEntry={mostrarContrasenia}
-          presionarIcono={() => toggleMostrar()}
-          esContrasenia={true}
-        />
-
-        {error && <Text className="text-red-600 text-sm mb-3">{error}</Text>}
-      </View>
-
-      <Pressable
-        onPress={handleSubmit(onSubmit)}
-        disabled={cargando}
-        className="bg-primary active:bg-primary-pressed p-4 rounded-chip mt-6 items-center"
-      >
-        {cargando ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <Text className="font-lexend text-white">Iniciar sesion</Text>
-        )}
-      </Pressable>
-
-      <Pressable
-        onPress={() => router.push("/registro")}
-        className="mt-4 items-center"
-      >
-        <Text className="font-lexend">¿No tienes cuenta? Crea una</Text>
-      </Pressable>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

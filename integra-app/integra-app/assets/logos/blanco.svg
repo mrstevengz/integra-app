@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1280 1280" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(0.699956,0,0,0.671143,14.903551,213.001423)">
+        <g transform="matrix(2.510864,-0,0,-2.781109,-1192.543083,1499.374791)">
+            <path d="M623.895,327.375C670.651,337.477 696.73,365.624 711.563,408.749C688.862,381.294 658.94,363.883 621.292,357.216C621.214,357.202 623.973,357.711 623.895,357.697C623.977,356.791 623.895,353.102 623.895,347.719L623.895,327.375Z" style="fill:white;"/>
+        </g>
+        <g transform="matrix(2.462381,0,-0,-2.417393,-1151.543105,1356.157077)">
+            <path d="M575.161,352.493C528.205,342.456 500.221,313.807 485.352,270.578C508.156,298.158 537.271,310.788 575.161,317.387L575.161,352.493Z" style="fill:white;"/>
+        </g>
+        <g transform="matrix(1.146343,0,0,1.349314,-375.77063,16.026283)">
+            <path d="M365.814,718.087C365.814,718.087 566.835,701.072 558.461,319.747L654.723,319.747C656.107,323.249 652.559,369.289 655.428,424.573C662.056,552.282 541.252,729.204 365.814,718.087Z" style="fill:white;"/>
+        </g>
+        <g transform="matrix(1.345137,0.006695,-0.005951,1.192258,-503.58862,78.670329)">
+            <ellipse cx="612.997" cy="234.702" rx="41.011" ry="47.454" style="fill:white;"/>
+        </g>
+    </g>
+    <g transform="matrix(2.82006,0,0,2.846499,-1470.307967,-733.06958)">
+        <g transform="matrix(117.963512,0,0,117.963512,970.541576,537.783582)">
+        </g>
+        <text x="624.791px" y="537.784px" style="font-family:'Lexend-Light', 'Lexend';font-weight:300;font-size:117.964px;fill:white;">n<tspan x="688.019px 727.065px 788.642px 858.122px 897.404px " y="537.784px 537.784px 537.784px 537.784px 537.784px ">tegra</tspan></text>
+    </g>
+</svg>
