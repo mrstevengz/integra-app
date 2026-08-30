@@ -54,7 +54,7 @@ export default function HistorialMedicamentos() {
             <Text className="font-lexend text-heading text-center">Sin medicamentos aun</Text>
             <Text className="font-lexend text-label text-center text-content-muted">Agrega tus medicamentos y recibe recordatorios para cada dosis</Text>
     
-            <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-chip mt-6 items-center" onPress={() => router.navigate("/medicacion/agregar-medicamento")}>
+            <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-card mt-6 items-center" onPress={() => router.navigate("/medicacion/agregar-medicamento")}>
               <Text className="font-lexend text-label text-white">Agregar medicamento</Text>
             </Pressable>
           </View>

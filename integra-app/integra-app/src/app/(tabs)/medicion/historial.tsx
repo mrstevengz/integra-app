@@ -14,6 +14,8 @@ import { labelHelper } from "./[medicionTipo]/agregar/[resultadoMedicion]";
 import { router } from "expo-router";
 import { formatearFecha } from "@/lib/fechas";
 import { formatearHora } from "@/lib/fechas";
+import { Activity, HeartPulse } from "lucide-react-native";
+import { color } from "@/theme/colors";
 
 export default function HistorialMediciones() {
   const perfil = useValue(perfil$);
@@ -21,6 +23,46 @@ export default function HistorialMediciones() {
   const tipos = useValue(tiposMedicion$);
 
   const medicionesHistorial = medicionesDelPerfil(mediciones, perfil.id);
+
+  if (medicionesHistorial.length === 0) return (
+    <View className="flex-1 bg-surface">
+      <View className="absolute top-0 left-0 right-0 z-10">
+        <SafeAreaView edges={['top']} className="bg-slate-100">
+          <TopBar name="Medicion" canGoBack={false} />
+        </SafeAreaView>
+         <TopBarSecondary
+        active="Historial"
+        tab1="Registrar"
+        tab2="Historial"
+        route1="/medicion"
+        route2="/medicion/historial"
+      />
+      </View>
+  
+      <View className="flex-1 items-center justify-center px-8">
+        <View className="flex-col gap-2 items-center">
+          <View className="w-80 h-40 bg-danger-subtle border border-line  rounded-sheet shadow-sm flex flex-col items-center overflow-hidden justify-center">
+        
+            <View className="items-center justify-center bg-surface-raised p-4 rounded-sheet">
+              <Activity
+                color={color.danger}
+                size={30} 
+                strokeWidth={2} 
+              />
+            </View>
+        
+          </View>
+  
+          <Text className="font-lexend text-heading text-center">Tu historial esta vacio</Text>
+          <Text className="font-lexend text-label text-center text-content-muted">Registra tu peso, presion, glucosa para ver tus tendencias con el tiempo.</Text>
+  
+          <Pressable className ="active:bg-primary-pressed p-5 px-12 rounded-card mt-6 items-center bg-danger" onPress={() => router.navigate("/medicion")}>
+            <Text className="font-lexend text-label text-white">Registrar medicion</Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+    )
 
   return (
     <View className="flex-1">
@@ -40,14 +82,6 @@ export default function HistorialMediciones() {
         className="flex-grow"
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-        {medicionesHistorial.length === 0 && (
-          <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-            <Text className="text-neutral-500 text-sm text-center">
-              No hay historial de mediciones.
-            </Text>
-          </View>
-        )}
-
         {medicionesHistorial.map((m) => {
           const t = buscarPorId(tipos, m.tipo_medicion_id);
           const medidoEn = new Date(m.medido_en);

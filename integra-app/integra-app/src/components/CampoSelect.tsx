@@ -58,8 +58,8 @@ export function CampoSelect<T extends FieldValues>({
                     backgroundColor: '#ffffff',
                 }}
 
-                selectedTextStyle={{ color: '#0f172a', fontSize: 16, textAlign: 'left', fontFamily: 'Lexend' }}
-                listTextStyle={{ color: '#0f172a', fontSize: 18, fontFamily: 'Lexend' }}
+                selectedTextStyle={{ color: '#0f172a', fontSize: 16, textAlign: 'left', fontFamily: 'LexendDeca-Regular' }}
+                listTextStyle={{ color: '#0f172a', fontSize: 18, fontFamily: 'LexendDeca-Regular' }}
                 itemSeparatorStyle={{ backgroundColor: '#e2e8f0' }}
                 dropDownIconStyle={{ tintColor: '#64748b', width: 20, height: 15 }}
             />

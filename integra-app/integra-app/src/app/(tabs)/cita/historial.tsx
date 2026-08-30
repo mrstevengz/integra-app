@@ -54,7 +54,7 @@ export default function HistorialCitaScreen() {
         <Text className="font-lexend text-heading text-center">No tienes citas programadas</Text>
         <Text className="font-lexend text-label text-center text-content-muted">Programa tus consultas y manten todas tus visitas en un solo lugar</Text>
 
-        <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-chip mt-6 items-center" onPress={() => router.navigate("/cita/agregar-cita")}>
+        <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-card mt-6 items-center" onPress={() => router.navigate("/cita/agregar-cita")}>
           <Text className="font-lexend text-label text-white">Programar cita</Text>
         </Pressable>
       </View>

@@ -92,7 +92,7 @@ export default function AvatarPerfil({
         >
             <View
                 style={circulo}
-                className="items-center justify-center overflow-hidden bg-primary-subtle border border-line-primary"
+                className="items-center justify-center overflow-hidden bg-primary-subtle border-2 border-line-primary"
             >
                 {avatarPath ? (
                     <Image source={{ uri: urlPublica('avatares', avatarPath) }} style={circulo} />

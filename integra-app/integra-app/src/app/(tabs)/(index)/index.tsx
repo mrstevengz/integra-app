@@ -1,18 +1,13 @@
-import { Text, View, ScrollView, Pressable, ActivityIndicator} from "react-native";
+import {View, ScrollView, ActivityIndicator} from "react-native";
 import TopBar from "@/components/TopBar";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useValue } from "@legendapp/state/react";
 import { conseguirIniciales, perfil$ } from "@/state/usuario";
-import { tomas$, tomasDelDia, tomasVigentesDelDia } from "@/state/tomas";
-import { ProximaToma } from "@/features/medicamentos/ProximaToma";
-import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
-import { buscarPorId, delPerfil } from "@/state/consultas";
-import ArticulosDestacados from "@/features/articulos/ArticulosDestacados";
-import ProximaCita from "@/features/citas/ProximaCita";
-import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
+import { tomas$} from "@/state/tomas";
+import { mediciones$} from "@/state/mediciones";
+import {delPerfil } from "@/state/consultas";
 import { medicamentos$ } from "@/state/medicamentos";
-import { ProgresoDelDia } from "@/features/medicamentos/ProgresoDelDia";
 import AvatarPerfil from "@/features/perfil/AvatarPerfil";
 import { color } from "@/theme/colors";
 import InicioCompleto from "@/features/perfil/InicioFull";
@@ -72,7 +67,9 @@ export default function HomeScreen() {
                     avatarPath={perfil.avatar_path}
                     iniciales={conseguirIniciales(perfil)}
                     tamano={45}
-                />}
+                    
+            />}
+            accionLabel="Ir al perfil"
             />
         </SafeAreaView>
 

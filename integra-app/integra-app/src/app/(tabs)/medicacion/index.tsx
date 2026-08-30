@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Platform } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, Platform, Pressable } from "react-native"
 import { syncState } from "@legendapp/state"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { router, useFocusEffect } from "expo-router"
@@ -12,6 +12,8 @@ import { generarTomasPendientes } from "@/state/tomas-generar"
 import {TomasDelDia} from "@/features/medicamentos/TomasDelDia"
 import TopBarSecondary from "@/components/TopBarSecondary"
 import { GlassView } from "expo-glass-effect"
+import { Check, CircleCheck } from "lucide-react-native"
+import { color } from "@/theme/colors"
 
 export default function MedicacionScreen() {
     const perfil = useValue(perfil$)
@@ -53,6 +55,42 @@ export default function MedicacionScreen() {
         if (!perfil?.id) return
         generarTomasPendientes(perfil.id)
     }, [perfil?.id, sincronizados, tomasSincronizadas, tomasListas, medsListos])
+
+    if (hoy.length === 0) return (
+         <View className="flex-1 bg-surface">
+            <View className="absolute top-0 left-0 right-0 z-10">
+                <SafeAreaView edges={['top']} className="bg-surface">
+                    <TopBar
+                        name="Medicación"
+                        canGoBack={false}
+                        grande
+                        subtitulo={`${new Date().toLocaleDateString('es-CR', {weekday: 'long'})}, ${new Date().getDate()} de ${new Date().toLocaleString('es-ES', {month: 'long'})}`}
+                    />
+                </SafeAreaView>
+           
+                <TopBarSecondary active="Tomas" tab1="Tomas" tab2="Medicamentos" route1="/medicacion" route2="/medicacion/historial"/>
+        </View>
+      
+          <View className="flex-1 items-center justify-center px-8">
+            <View className="flex-col gap-2 items-center">
+              <View className="w-32 h-32 bg-success-subtle rounded-full flex flex-col items-center overflow-hidden justify-center">
+            
+                <View className="items-center justify-center rounded-sheet">
+                  <CircleCheck
+                    color={color.success}
+                    size={50} 
+                    strokeWidth={2} 
+                  />
+                </View>
+            
+              </View>
+      
+              <Text className="font-lexend text-heading text-center">¡Todo al dia!</Text>
+              <Text className="font-lexend text-label text-center text-content-muted">No tienes tomas pendientes hoy. Disfruta tu dia.</Text>
+            </View>
+          </View>
+        </View>
+    )
 
 
     return (
