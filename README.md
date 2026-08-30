@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="integra-app/integra-app/assets/icon.svg" width="130" alt="Integra" />
+<img src="integra-app/integra-app/assets/icon.png" width="130" alt="Integra" />
 
 # Integra
 
