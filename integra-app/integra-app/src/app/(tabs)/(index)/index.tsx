@@ -1,20 +1,22 @@
-import { Text, View, ScrollView, Pressable} from "react-native";
+import { Text, View, ScrollView, Pressable, ActivityIndicator} from "react-native";
 import TopBar from "@/components/TopBar";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useValue } from "@legendapp/state/react";
-import { perfil$ } from "@/state/usuario";
+import { conseguirIniciales, perfil$ } from "@/state/usuario";
 import { tomas$, tomasDelDia, tomasVigentesDelDia } from "@/state/tomas";
 import { ProximaToma } from "@/features/medicamentos/ProximaToma";
 import { mediciones$, medicionesDelPerfil, tiposMedicion$ } from "@/state/mediciones";
-import { buscarPorId } from "@/state/consultas";
+import { buscarPorId, delPerfil } from "@/state/consultas";
 import ArticulosDestacados from "@/features/articulos/ArticulosDestacados";
 import ProximaCita from "@/features/citas/ProximaCita";
 import { citas$, resultadosCita$, citasNoResueltas } from "@/state/citas";
-import { color } from "@/theme/colors";
-import { User } from "lucide-react-native";
 import { medicamentos$ } from "@/state/medicamentos";
 import { ProgresoDelDia } from "@/features/medicamentos/ProgresoDelDia";
+import AvatarPerfil from "@/features/perfil/AvatarPerfil";
+import { color } from "@/theme/colors";
+import InicioCompleto from "@/features/perfil/InicioFull";
+import InicioIncompleto from "@/features/perfil/InicioIncompleto";
 
 //Valores de padding para el scrollview, queria hacer esto para usarlo en mas pantallas pero literalmente es la unica pantalla que usa estos valores especificos, js slime me.
 export const estilosScrollView = {
@@ -25,31 +27,36 @@ export const estilosScrollView = {
 
 export default function HomeScreen() {
     const perfil = useValue(perfil$)
-    
+    const tomas = delPerfil(useValue(tomas$), perfil.id)
+    const medicamentos = delPerfil(useValue(medicamentos$), perfil.id)
+    const mediciones = delPerfil(useValue(mediciones$), perfil.id)
 
-    const tomas = useValue(tomas$)
-    const medicamentos = useValue(medicamentos$)
-    const tomasDeHoy = tomasVigentesDelDia(tomas, medicamentos, new Date(), perfil?.id)
-    
-    const sinResolver = tomasDeHoy.filter(
-        (t) => t.estado === 'pendiente' || t.estado === 'pospuesta'
+    if (!perfil.id) return (
+         <View className="flex-1 bg-surface">
+        <SafeAreaView edges={['top']} className="bg-surface">
+            <TopBar
+            name={`Hola, ${perfil.nombre}`}
+            canGoBack={false}
+            grande
+            subtitulo={`${new Date().toLocaleDateString('es-CR', {weekday: 'long'})}, ${new Date().getDate()} de ${new Date().toLocaleString('es-ES', {month: 'long'})}`}
+            accion={() => router.navigate("/expediente")}
+            accionIcono={<AvatarPerfil
+                    perfilId={perfil.id}
+                    avatarPath={perfil.avatar_path}
+                    iniciales={conseguirIniciales(perfil)}
+                    tamano={45}
+                />}
+            />
+
+            <ScrollView>
+                <ActivityIndicator size="large" color={color.primary}/>
+            </ScrollView>
+        </SafeAreaView>
+        </View>
     )
 
-    const tomasResueltas = tomasDeHoy.length - sinResolver.length
+   let nuevo = tomas.length === 0 && medicamentos.length === 0 && mediciones.length === 0
 
-    const hoy = new Date()
-
-    const mediciones = useValue(mediciones$)
-    const tipos = useValue(tiposMedicion$)
-    const citas = useValue(citas$)
-    
-    const resultados = useValue(resultadosCita$)
-    const citasProximasLista = citasNoResueltas(citas, resultados, perfil.id)
-        .filter((c) => new Date(c.programada_para).getTime() >= hoy.getTime())
-        
-    const medicionesHistorial = medicionesDelPerfil(mediciones, perfil.id)
-
-    const medicionComponente = medicionesHistorial.slice(0, 2)
     
   return (
     <View className="flex-1 bg-surface">
@@ -60,7 +67,12 @@ export default function HomeScreen() {
             grande
             subtitulo={`${new Date().toLocaleDateString('es-CR', {weekday: 'long'})}, ${new Date().getDate()} de ${new Date().toLocaleString('es-ES', {month: 'long'})}`}
             accion={() => router.navigate("/expediente")}
-            accionIcono={<User size={30} color={color.primary}/>}
+            accionIcono={<AvatarPerfil
+                    perfilId={perfil.id}
+                    avatarPath={perfil.avatar_path}
+                    iniciales={conseguirIniciales(perfil)}
+                    tamano={45}
+                />}
             />
         </SafeAreaView>
 
@@ -69,57 +81,7 @@ export default function HomeScreen() {
                 contentContainerStyle={estilosScrollView}
         >
 
-            <ProximaToma tomas = {tomasDeHoy}/>
-
-            <ProgresoDelDia tomasDeHoy ={tomasDeHoy} tomasResueltas={tomasResueltas}/>
-
-            <ProximaCita citasProximas={citasProximasLista}/>
-
-             <View className="flex-row items-center justify-between my-5">
-                <Text className="text-heading font-lexend">
-                    Ultimas mediciones
-                </Text>
-            
-                <Pressable onPress={() => router.push('/medicion')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-body text-primary font-lexend-bold tracking-heading">Ver todas</Text>
-                </Pressable>
-            </View>
-
-            {medicionComponente.length === 0 && (
-                <View className="rounded-2xl border border-neutral-200 bg-white p-5 items-center justify-between">
-                    <Text className="text-neutral-500 text-sm font-lexend">No hay historial de mediciones</Text>
-                </View>
-            )}
-
-            <View className="flex-row gap-6">
-                {medicionComponente.map((m => {
-                    const t = buscarPorId(tipos, m.tipo_medicion_id)
-                    const medidoEn = new Date(m.medido_en)
-
-                    return (
-                        <Pressable className="flex-col flex-1 gap-2 justify-start rounded-card bg-surface-raised p-4 shadow-sm active:bg-surface-sunken" key={m.id} onPress={() => router.navigate('/medicion/historial')}>
-                            <Text className="font-lexend text-content-subtle">{t?.nombre}</Text>
-                            <Text className="font-lexend-bold text-title tracking-tighter">{m.valor} {m.valor_secundario && `/ ${m.valor_secundario}`}</Text>
-                            <Text className="font-lexend text-primary-pressed">{t?.unidad}</Text>
-                            <Text className="font-lexend text-primary-on-subtle">{medidoEn.toDateString().slice(4, 10)} {medidoEn.toTimeString().slice(0,5)}</Text>
-                        </Pressable>
-                    )
-                }))}
-            </View>
-
-            <View className="flex-row items-center justify-between my-5">
-                <Text className="text-heading font-lexend">
-                    Articulos Destacados
-                </Text>
-            
-                <Pressable onPress={() => router.push('/articulos')} hitSlop={8} accessibilityRole="button">
-                    <Text className="text-body text-primary font-lexend-bold tracking-heading">Ver todos</Text>
-                </Pressable>
-
-                
-            </View>
-
-            <ArticulosDestacados/>
+            {nuevo ? <InicioIncompleto/> : <InicioCompleto/>}
 
         </ScrollView>
     </View>

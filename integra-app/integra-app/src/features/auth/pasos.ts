@@ -10,17 +10,17 @@ export type Paso = {
 export const PASOS: Paso[] = [
     {
         titulo: 'Informacion basica',
-        subtitulo: 'Paso 1 de 3',
+        subtitulo: '¡Hola! Cuéntanos un poco sobre ti.',
         campos: ['nombre', 'apellidos', 'email', 'fechaNacimiento']
     },
     {
         titulo: 'Contraseña',
-        subtitulo: 'Paso 2 de 3 ——— elige una contraseña segura',
+        subtitulo: 'Protege tu cuenta con una contraseña segura.',
         campos: ['password', 'confirmar']
     },
     {
         titulo: 'Datos de contacto',
-        subtitulo: 'Paso 3 de 3',
+        subtitulo: 'Verifica tu identidad y contacto.',
         campos: ['telefono', 'cedula']
     },
     

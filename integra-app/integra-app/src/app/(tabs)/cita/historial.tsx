@@ -10,6 +10,8 @@ import { perfil$ } from "@/state/usuario";
 import { formatearFecha } from "@/lib/fechas";
 import { formatearHora } from "@/lib/fechas";
 import EstadoCita from "@/features/citas/EstadoCita";
+import { CalendarPlus } from "lucide-react-native";
+import { color } from "@/theme/colors";
 
 export default function HistorialCitaScreen() {
   const perfil = useValue(perfil$)
@@ -18,6 +20,48 @@ export default function HistorialCitaScreen() {
 
   //Solo las que ya tienen resultado registrado: asistida, no asistida o cancelada.
   const historial = citasResueltas(citas, resultados, perfil.id)
+
+  if (historial.length === 0) return (
+  <View className="flex-1 bg-slate-100">
+    <View className="absolute top-0 left-0 right-0 z-10">
+      <SafeAreaView edges={['top']} className="bg-slate-100">
+        <TopBar name='Citas medicas' canGoBack={false}/>
+      </SafeAreaView>
+      <TopBarSecondary active="Historial" tab1="Pendientes" tab2="Historial" route1="/cita" route2="/cita/historial"/>
+    </View>
+
+    <View className="flex-1 items-center justify-center px-8">
+      <View className="flex-col gap-2 items-center">
+        <View className="w-24 h-24 bg-slate-100 border border-slate-200 rounded-2xl shadow-sm flex flex-col items-center overflow-hidden">
+      
+      
+          <View className="w-full h-6 bg-primary flex flex-row justify-center items-center gap-6 relative">
+            <View className="w-1.5 h-3 bg-surface rounded-full opacity-80" />
+            <View className="w-1.5 h-3 bg-surface rounded-full opacity-80" />
+          </View> 
+  
+  
+          <View className="flex-1 items-center justify-center">
+            <CalendarPlus 
+              color={color.primary}
+              size={30} 
+              strokeWidth={2} 
+            />
+          </View>
+      
+        </View>
+
+        <Text className="font-lexend text-heading text-center">No tienes citas programadas</Text>
+        <Text className="font-lexend text-label text-center text-content-muted">Programa tus consultas y manten todas tus visitas en un solo lugar</Text>
+
+        <Pressable className ="bg-primary active:bg-primary-pressed p-5 px-8 rounded-chip mt-6 items-center" onPress={() => router.navigate("/cita/agregar-cita")}>
+          <Text className="font-lexend text-label text-white">Programar cita</Text>
+        </Pressable>
+      </View>
+    </View>
+  </View>
+  )
+
 
   return (
     <View className="flex-1">
@@ -29,9 +73,9 @@ export default function HistorialCitaScreen() {
 
       <ScrollView className="flex-1 bg-slate-100">
         {historial.length === 0 && (
-          <Text className="text-content-subtle p-6">
-            Todavia no hay citas registradas. Cuando marques el resultado de una cita, aparece aca.
-          </Text>
+         <View className="flex-1 items-center justify-center">
+            <Text>Hola</Text>
+         </View>
         )}
 
         {historial.map((c) => {

@@ -59,7 +59,7 @@ export function CampoFecha<T extends FieldValues>({
             <Text className='font-lexend-bold mb-1'>{title}</Text>
                     
             <Pressable
-                className={`border rounded-lg py-4 px-4 bg-white flex ${error ? 'border-red-400' : 'border-slate-300'}`}
+                className={`border rounded-lg py-4 px-4 bg-white flex ${error ? 'border-danger' : 'border-slate-300'}`}
                 onPress={abrirPicker}>
                 <Text numberOfLines={1}
                     ellipsizeMode="tail"
@@ -74,7 +74,11 @@ export function CampoFecha<T extends FieldValues>({
                 </Text>
             </Pressable>
 
-        {error && <Text className="text-red-600 text-sm mt-1">{error}</Text>}
+        {error && (
+        <Text className="mt-1 text-caption font-lexend text-danger">
+          {error}
+        </Text>
+      )}
         
         {isDatePickerOpen && Platform.OS === 'android' && (
                 <DateTimePicker

@@ -14,16 +14,16 @@ import ContactoEmergencia from "@/features/contactos-emergencia/ContactoEmergenc
 import { checklistExpediente$ } from "@/state/checklist-expediente";
 import {QrCode} from "lucide-react-native";
 import { color } from "@/theme/colors";
-import { convertirALista } from "@/state/consultas";
+import { convertirALista, delPerfil } from "@/state/consultas";
 
 
 export default function ExpedienteScreen() {
     //Obtener datos de sesion y perfil
     const perfil = useValue(perfil$)
-    const condiciones = convertirALista(useValue(condiciones$))
-    const alergias = convertirALista(useValue(alergias$))
+    const condiciones = delPerfil(useValue(condiciones$), perfil.id)
+    const alergias = delPerfil(useValue(alergias$), perfil.id)
 
-    const contactos = convertirALista(useValue(contactosEmergencia$))
+    const contactos = delPerfil(useValue(contactosEmergencia$), perfil.id)
     const confirmadas = useValue(checklistExpediente$)
 
     
@@ -66,7 +66,7 @@ export default function ExpedienteScreen() {
 
         <ScrollView className="flex-grow bg-slate-100" contentContainerStyle={{paddingBottom: 100, paddingTop: 15 }}>
 
-          <PerfilSummary nombre={nombre} edad={perfil.fecha_nacimiento ? edadEnAnios(perfil.fecha_nacimiento) : null} genero={perfil.genero} cedula={perfil.cedula}/>
+          <PerfilSummary perfil={perfil}/>
 
           {expedienteIncompleto && (
               <Pressable className="mt-3 p-4 px-5 bg-slate-200 border-l-2 border-slate-700 text-slate-500"
@@ -118,15 +118,14 @@ export default function ExpedienteScreen() {
 
           <PerfilBox titulo="Contactos de Emergencia" link="/expediente/contactos-emergencia" linkName="Agregar">
             {contactos.map((contacto) => (
-              <ContactoEmergencia key={contacto.id} nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono}  
-              onPress={() => router.navigate({
-              pathname: '/expediente/contactos-emergencia',
-                    })}/>
+              <Pressable key={contacto.id} onPress={() => router.navigate('/expediente/contactos-emergencia')}>
+              <ContactoEmergencia  nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono} />
+              </Pressable>
             ))}
           </PerfilBox>
 
-          <Pressable onPress={cerrarSesion} className="border border-red-300 rounded-lg py-3 mt-4 items-center">
-            <Text>Cerrar sesion</Text>
+          <Pressable onPress={cerrarSesion} className="border border-danger-subtle items-center bg-red-500/60 p-4 mx-4 rounded-card mt-8">
+            <Text className="font-lexend-bold text-danger">Cerrar sesion</Text>
           </Pressable>
         </ScrollView>
     </View>

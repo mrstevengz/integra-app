@@ -17,9 +17,45 @@ import { desdeFechaLocal } from "@/lib/fechas";
 import { perfil$ } from "@/state/usuario";
 import { fechaLocal, formatearFecha } from "@/lib/fechas";
 import { formatearHora } from "@/lib/fechas";
-import { Calendar, DateData } from "react-native-calendars";
+import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import { useMemo, useState } from "react";
-import { convertirALista } from "@/state/consultas";
+import { color } from "@/theme/colors";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
+
+LocaleConfig.locales["es"] = {
+  monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+  monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+  dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+  dayNamesShort: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+  today: "Hoy",
+};
+LocaleConfig.defaultLocale = "es";
+
+const calendarTheme = {
+  calendarBackground: color.surfaceRaised,
+  textSectionTitleColor: color.contentMuted,
+  monthTextColor: color.primary,
+  dayTextColor: color.content,
+  textDisabledColor: color.contentDisabled,
+  textInactiveColor: color.contentDisabled,
+  todayTextColor: color.primary,
+  selectedDayBackgroundColor: color.primary,
+  selectedDayTextColor: color.surfaceRaised,
+  dotColor: color.primary,
+  selectedDotColor: color.surfaceRaised,
+  arrowColor: color.primary,
+  disabledArrowColor: color.contentDisabled,
+  textDayFontFamily: "LexendDeca-Regular",
+  textMonthFontFamily: "LexendDeca-Bold",
+  textDayHeaderFontFamily: "LexendDeca-Regular",
+  textDayFontWeight: "normal" as const,
+  textMonthFontWeight: "normal" as const,
+  textDayHeaderFontWeight: "normal" as const,
+  textDayFontSize: 14,
+  textMonthFontSize: 16,
+  textDayHeaderFontSize: 12,
+};
+
 
 export default function CitaScreen() {
   const perfil = useValue(perfil$);
@@ -38,17 +74,17 @@ export default function CitaScreen() {
   //En el calendario, solo se marcan los dias con citas pendientes de resolver.
   const markedDates = useMemo(() => {
     const marcas: Record<string, any> = {};
-    pendientes.forEach((c) => {
+      pendientes.forEach((c) => {
       marcas[fechaLocal(new Date(c.programada_para))] = {
         marked: true,
-        dotColor: "#000000",
+        dotColor: color.primary,
       };
     });
     if (selectedDate) {
       marcas[selectedDate] = {
         ...marcas[selectedDate],
         selected: true,
-        selectedColor: "#000000",
+        selectedColor: color.primary,
       };
     }
     return marcas;
@@ -77,11 +113,23 @@ export default function CitaScreen() {
 
       <ScrollView className="flex-1 bg-slate-100"
       contentContainerStyle={{
-                    flexGrow: 1,
-                    paddingBottom: 120
+          flexGrow: 1,
+          paddingBottom: 120
         }}>
         <View>
-        <Calendar onDayPress={handleDayPress} markedDates={markedDates} />
+          <Calendar
+          onDayPress={handleDayPress}
+          markedDates={markedDates}
+          theme={calendarTheme}
+          renderArrow={(direction) =>
+            direction === "left" ? (
+              <ChevronLeft size={22} color={color.content} />
+            ) : (
+              <ChevronRight size={22} color={color.content} />
+            )
+          }
+        />
+
         </View>
         <Text className="font-semibold uppercase text-label p-4">
           {selectedDate ? "Citas del dia" : "Pendientes"}

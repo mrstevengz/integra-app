@@ -7,7 +7,6 @@ import {
   esDoble,
   mediciones$,
   tiposMedicion$,
-  TipoMedicion,
   medicionesDeTipo,
 } from "@/state/mediciones";
 import { useValue } from "@legendapp/state/react";
@@ -26,6 +25,7 @@ import { color } from "@/theme/colors";
 import EstadoMedicionBarra, { calcularEstado, labelContexto } from "@/features/mediciones/EstadoMedicion";
 import GraficaMedicion from "@/features/mediciones/GraficaMediciones";
 import { perfil$ } from "@/state/usuario";
+
 
 export default function DetalleMedicion() {
   const { medicionId } = useLocalSearchParams();

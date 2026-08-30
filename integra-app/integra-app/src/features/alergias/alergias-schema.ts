@@ -12,7 +12,7 @@ export const alergiasSchema = z.object({
 
     severidad: z.string().trim(),
 
-    detalles: z.string().trim().refine((v) => v === '' || v.length >= 5 || v.length <= 200, { error: 'Detalles muy cortos / muy largos' }),
+    detalles: z.string().trim().refine((v) => v === '' || v.length >= 5 && v.length <= 150, { error: 'Detalles muy cortos / muy largos' }),
 })
 
 export type AlergiasForm = z.infer<typeof alergiasSchema>

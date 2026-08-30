@@ -114,7 +114,7 @@ export default function AgregarMedicamentoScreen() {
                 <CampoTexto name="indicaciones" control={control} title="Indicaciones del medico"
                     placeholder="Ej. Tomar con abundante agua" opcional/>
 
-                <Text className="text-label mt-4 mb-3">Horarios</Text>
+                <Text className="font-lexend mt-4 mb-3">Horarios</Text>
 
                 {fields.map((field, index) => (
                     <CampoHorario
@@ -139,7 +139,7 @@ export default function AgregarMedicamentoScreen() {
                         fields.length >= 6 ? 'border-slate-200' : ''
                     }`}
                 >
-                    <Text className={fields.length >= 6 ? 'text-white' : 'text-white'}>
+                    <Text className={`font-lexend-bold text-label ${fields.length >= 6 ? 'text-content-disabled' : 'text-primary'}`}>
                         {fields.length >= 6 ? 'Maximo 6 horarios' : '+ Agregar horario'}
                     </Text>
                 </Pressable>
