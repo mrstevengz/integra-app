@@ -22,7 +22,10 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.mrstevengz.integraapp"
+      "package": "com.mrstevengz.integraapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "scheme": "integra-app",
     "web": {
@@ -53,10 +56,19 @@
         }
       ],
       "expo-sqlite",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "root": "src/app"
+      },
+      "eas": {
+        "projectId": "6907c350-776e-493c-b66f-8ffb0e054226"
+      }
     }
   }
 }

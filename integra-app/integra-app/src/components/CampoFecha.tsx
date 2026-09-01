@@ -83,9 +83,7 @@ export function CampoFecha<T extends FieldValues>({
         {isDatePickerOpen && Platform.OS === 'android' && (
                 <DateTimePicker
                     value={field.value ?? (mode === 'time' ? new Date() : new Date(2000, 0, 1))}
-
                     mode={mode}
-                    design="material"
                     minimumDate={new Date(1930, 0, 1)}
                     onChange={(evento, fecha) => {
                         setIsDatePickerOpen(false)

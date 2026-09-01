@@ -1,6 +1,5 @@
 import { color } from "@/theme/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { UserCheck, UserStar } from "lucide-react-native";
+import { UserStar } from "lucide-react-native";
 import { Pressable, View, Text } from "react-native";
 
 export type ContactoEmergenciaProps = {

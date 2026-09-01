@@ -14,10 +14,29 @@ import { LoginForm, loginSchema } from "../../features/auth/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CampoTexto } from "@/components/CampoTexto";
+import { iniciarSesionConGoogle } from "@/state/auth";
+import { color } from "@/theme/colors";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function LoginScreen() {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [cargandoGoogle, setCargandoGoogle] = useState(false);
+
+  async function entrarConGoogle() {
+    setCargandoGoogle(true);
+    setError(null);
+
+    try {
+      const inicioSesion = await iniciarSesionConGoogle();
+      if (inicioSesion) router.replace("/");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo iniciar sesion con Google");
+    } finally {
+      setCargandoGoogle(false);
+    }
+  }
 
   const [mostrarContrasenia, setMostrarContrasenia] = useState(true);
 
@@ -104,6 +123,21 @@ export default function LoginScreen() {
               <ActivityIndicator color="white" />
             ) : (
               <Text className="font-lexend text-label text-white">Iniciar sesion</Text>
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={entrarConGoogle}
+            disabled={cargando || cargandoGoogle}
+            className="flex-row items-center justify-center gap-3 border border-line-strong p-5 rounded-chip mt-3 active:bg-surface-sunken"
+          >
+            {cargandoGoogle ? (
+              <ActivityIndicator color={color.content} />
+            ) : (
+              <>
+                <Ionicons name="logo-google" size={20} color={color.content} />
+                <Text className="font-lexend text-label text-content">Continuar con Google</Text>
+              </>
             )}
           </Pressable>
 

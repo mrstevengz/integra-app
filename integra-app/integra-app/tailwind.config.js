@@ -75,6 +75,7 @@ module.exports = {
         label: ["15px", { lineHeight: "20px" }],
         caption: ["14px", { lineHeight: "20px" }],
         "large-title": ["34px", { lineHeight: "41px" }],
+        tab: ["11px", { lineHeight: "14px", letterSpacing: "0.2px" }],
       },
 
       letterSpacing: {
