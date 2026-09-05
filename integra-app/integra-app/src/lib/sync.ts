@@ -25,6 +25,11 @@ function esErrorDePermisos(mensaje: string): boolean {
     return mensaje.includes('permission denied') || mensaje.includes('row-level security')
 }
 
+function esErrorDeRelojDeSupabase(mensaje: string): boolean {
+    return mensaje.includes('JWT issued at future')
+}
+
+
 export const syncedTable = configureSynced(syncedSupabase, {
     supabase,
     persist: {plugin: observablePersistSqlite(Storage), retrySync: true}, //Escribe el SQLite en cada cambio que hay y lo recarga al abrir la aplicacion.
@@ -34,6 +39,10 @@ export const syncedTable = configureSynced(syncedSupabase, {
         console.error(`[sync:${params.source}]`, error.message)
 
         const msg = error.message ?? ''
+
+        if (esErrorDeRelojDeSupabase(msg)) {
+            return 
+        }
 
         //Conflicto de clave unica = el servidor YA tiene esa fila (otro dispositivo
         //la creo). La escritura local sobra: se revierte para que no quede pegada
@@ -52,5 +61,7 @@ export const syncedTable = configureSynced(syncedSupabase, {
         if (esErrorDePermisos(msg)) {
             Alert.alert('Error de sincronizacion', 'No se pudo guardar en el servidor. Intente mas tarde')
         }
+
+        
     }
 })

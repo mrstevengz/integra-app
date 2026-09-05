@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { BottomTabBarProps } from "expo-router/js-tabs";
 import { ComponentProps } from "react";
 import { Pressable, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";

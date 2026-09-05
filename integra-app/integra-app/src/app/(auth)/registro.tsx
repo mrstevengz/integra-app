@@ -234,7 +234,7 @@ export default function RegistroScreen() {
           <View>
             <Pressable
               onPress={continuar}
-              className="bg-primary active:bg-primary-pressed p-5 rounded-chip mt-6 items-center"
+              className="bg-primary active:bg-primary-pressed p-5 rounded-chip mt-6 mb-3 items-center"
             >
               {isLoading ? (
                 <ActivityIndicator color="white" />
@@ -255,9 +255,9 @@ export default function RegistroScreen() {
             {paso === 0 && (
               <Link
                 href="/login"
-                className="font-lexend text-label text-center mt-4"
+                className="text-label items-center"
               >
-                ¿Ya tienes cuenta? <Text className="font-lexend-bold">Iniciar sesion</Text>
+                <Text className="font-lexend text-center"> ¿Ya tienes cuenta? <Text className="font-lexend-bold text-center">Iniciar sesion</Text> </Text>
               </Link>
             )}
           </View>
