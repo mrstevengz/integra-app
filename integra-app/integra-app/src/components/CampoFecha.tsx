@@ -30,9 +30,12 @@ export function CampoFecha<T extends FieldValues>({
     const error = fieldState.error?.message
     //Estado para manejar si esta abierto o no
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+
+    //Variables de estado para la fecha y el tiempo, se utilizan para mostrar el valor en pantalla sin cambiarlo.
     const [tempDate, setTempDate] = useState(field.value ?? new Date(2000, 0, 1))
     const [tempTime, setTempTime] = useState(field.value ?? new Date())
 
+    //Maneja si el picker esta abierto o no, si es de tiempo, se usa tempTime, y viceversa.
     const abrirPicker = () => {
     if (mode === 'time') {
         setTempTime(field.value ?? new Date())
@@ -40,25 +43,27 @@ export function CampoFecha<T extends FieldValues>({
         setTempDate(field.value ?? new Date(2000, 0, 1))
     }
     setIsDatePickerOpen(true)
-}
+    }
 
+    //Funcion helper para manejar el modal que se abre solamente en IOS
     const confirmarIOS = () => {
     field.onChange(mode === 'time' ? tempTime : tempDate)
     setIsDatePickerOpen(false)
     }
 
+    //Funcion helper para manejar el boton de cancelar del modal, en IOS
     const cancelarIOS = () => setIsDatePickerOpen(false)
     
     return (
         <View className="mb-4">
-            <Text className='mb-2 text-lg'>{title}</Text>
+            <Text className='font-lexend-bold mb-1'>{title}</Text>
                     
             <Pressable
-                className={`border rounded-lg py-4 px-4 bg-white flex ${error ? 'border-red-400' : 'border-slate-300'}`}
+                className={`border rounded-lg py-4 px-4 bg-white flex ${error ? 'border-danger' : 'border-slate-300'}`}
                 onPress={abrirPicker}>
                 <Text numberOfLines={1}
                     ellipsizeMode="tail"
-                    className={field.value ? 'text-slate-900 text-lg' : 'text-slate-400 text-lg'}
+                    className={field.value ? 'font-lexend' : 'text-content-disabled font-lexend'}
                     >
                     {field.value
                     ? mode === 'time'
@@ -69,14 +74,16 @@ export function CampoFecha<T extends FieldValues>({
                 </Text>
             </Pressable>
 
-        {error && <Text className="text-red-600 text-sm mt-1">{error}</Text>}
+        {error && (
+        <Text className="mt-1 text-caption font-lexend text-danger">
+          {error}
+        </Text>
+      )}
         
         {isDatePickerOpen && Platform.OS === 'android' && (
                 <DateTimePicker
                     value={field.value ?? (mode === 'time' ? new Date() : new Date(2000, 0, 1))}
-
                     mode={mode}
-                    design="material"
                     minimumDate={new Date(1930, 0, 1)}
                     onChange={(evento, fecha) => {
                         setIsDatePickerOpen(false)

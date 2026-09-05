@@ -46,6 +46,7 @@ export function formatearHora(fecha: Date): string {
     return fecha.toLocaleTimeString(LOCALE, { hour: 'numeric', minute: '2-digit' })
 }
 
+
 //Pasar un string completo de hora a formato texto con AM y PM. 08:00:00 => 8:00 a.m.
 export function formatearHoraDeTexto(hora: string): string {
     const { horas, minutos } = dividirHora(hora)

@@ -1,17 +1,11 @@
 {
   "expo": {
-    "name": "integra-app",
+    "name": "Integra",
     "slug": "integra-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true
     },
@@ -20,9 +14,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.mrstevengz.integraapp"
+      "package": "com.mrstevengz.integraapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "scheme": "integra-app",
     "web": {
@@ -31,16 +27,49 @@
     },
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "Integra necesita acceso a tus fotos para que puedas elegir una foto de perfil."
+        }
+      ],
+      [
         "expo-router",
         {
           "root": "src/app"
         }
       ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/LexendDeca-Black.ttf",
+            "./assets/fonts/LexendDeca-Bold.ttf",
+            "./assets/fonts/LexendDeca-Regular.ttf"
+          ]
+        }
+      ],
       "expo-sqlite",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "root": "src/app"
+      },
+      "eas": {
+        "projectId": "6907c350-776e-493c-b66f-8ffb0e054226"
+      }
     }
   }
 }

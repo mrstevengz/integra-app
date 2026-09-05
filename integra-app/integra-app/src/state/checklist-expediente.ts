@@ -2,6 +2,7 @@ import { observable } from "@legendapp/state"
 import { observablePersistSqlite } from "@legendapp/state/persist-plugins/expo-sqlite"
 import { synced } from "@legendapp/state/sync"
 import { Storage } from 'expo-sqlite/kv-store'
+import { Perfil } from "./usuario"
 
 //La Checklist es un tipo y variable persistente para recordar SOLO en el dispositivo si el usuario ya completo su expediente, y asi no mostrar el mensaje de alerta.
 //Para completar el expediente, el usuario debe completar los campos de datos personales, alergias, condiciones, etc. Referir a /expediente/completar.tsx para ver mas datos
@@ -20,8 +21,34 @@ export type Checklist = {
     incompleta: boolean
 }
 
+export type SeccionExpediente = Checklist & {
+    completada: boolean
+}
+
+
 //Variable de LegendState que SOLAMENTE se almacena en el telefono.
 export const checklistExpediente$ = observable(synced({
     initial: {} as Record<ClaveChecklist, boolean>,
     persist: {name: 'expedienteChecklist', plugin: observablePersistSqlite(Storage)}
 }))
+
+export function seccionesExpediente(
+    perfil: Pick<Perfil, 'genero' | 'cedula' | 'tipo_sangre'>,
+    totalCondiciones: number,
+    totalAlergias: number,
+    totalContactos: number,
+    confirmadas: Record<ClaveChecklist, boolean>,
+): SeccionExpediente[] {
+    const secciones: Checklist[] = [
+        { id: 'datosPersonales',    label: 'Datos personales',       incompleta: perfil.genero == null || perfil.cedula == null },
+        { id: 'tipoSangre',         label: 'Tipo de sangre',         incompleta: perfil.tipo_sangre == null },
+        { id: 'condiciones',        label: 'Condiciones médicas',    incompleta: totalCondiciones === 0 },
+        { id: 'alergias',           label: 'Alergias',                incompleta: totalAlergias === 0 },
+        { id: 'contactoEmergencia', label: 'Contacto de emergencia', incompleta: totalContactos === 0 },
+    ]
+
+    return secciones.map(seccion => ({
+        ...seccion,
+        completada: seccion.incompleta === false || confirmadas[seccion.id] === true,
+    }))
+}

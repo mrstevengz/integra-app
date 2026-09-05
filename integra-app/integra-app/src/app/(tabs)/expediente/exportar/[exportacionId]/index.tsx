@@ -34,6 +34,7 @@ export default function DetalleExportacionScreen() {
     const { exportacionId } = useLocalSearchParams()
     const exportaciones = useValue(exportaciones$)
 
+    //Se mandan a llamar TODOS los datos almacenados para crear el HTML y el pdf
     const perfil = useValue(perfil$)
     const alergias = delPerfil(useValue(alergias$), perfil.id)
     const condiciones = condicionesDelPerfil(useValue(condiciones$), perfil.id)
@@ -66,9 +67,13 @@ export default function DetalleExportacionScreen() {
         )
     }
 
+    //Retorna las secciones en un numero
     const cantidadSecciones = seccionesIncluidas(exportacion).length
+
+    //Retorna en formato de fecha cuando vence la exportacion
     const vence = formatearFecha(new Date(exportacion.expira_en))
 
+    //Funcion que genera el HTML y lo guarda en la pagina
     async function guardarPDF() {
         if (generandoPDF || !exportacion) return
         setGenerandoPDF(true)

@@ -28,7 +28,7 @@ export default function ArticulosDestacados() {
          <View className="flex-row gap-6">
             {articulosLista.length === 0 && (
                 <View className="mx-6 mb-8 rounded-2xl border border-dashed border-neutral-200 bg-white px-5 py-8 items-center">
-                    <Text className="text-neutral-500 text-sm text-center">
+                    <Text className="text-neutral-500 text-sm text-center font-lexend">
                         No hay articulos destacados
                     </Text>
                 </View>
@@ -36,15 +36,15 @@ export default function ArticulosDestacados() {
 
             {matches.length === 0 && item && (
             <Pressable 
-                className="flex-col flex-1 justify-start rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm active:bg-white/80" 
+                className="flex-col flex-1 justify-start rounded-card bg-surface-raised p-4 shadow-sm active:bg-surface-sunken" 
                 key={item?.id} 
                 onPress={() => router.navigate({
                     pathname: '/articulos/[categoriaArt]/[articuloId]',
                     params: { categoriaArt: item?.categoria, articuloId: item?.id }
                 })}>
 
-                <Text className="text-alert-color">{item?.categoria}</Text>
-                <Text className="text-2xl font-bold">{item?.titulo}</Text>
+                <Text className="text-primary font-lexend">{item?.categoria}</Text>
+                <Text className="text-title font-lexend">{item?.titulo}</Text>
             </Pressable>
             )}
 
@@ -54,8 +54,8 @@ export default function ArticulosDestacados() {
                             pathname: '/articulos/[categoriaArt]/[articuloId]',
                             params: {categoriaArt: m.categoria, articuloId: m.id}
                         })}>
-                        <Text className="text-alert-color">{m?.categoria}</Text>
-                        <Text className="text-2xl font-bold">{m?.titulo}</Text>
+                        <Text className="text-primary font-lexend">{m?.categoria}</Text>
+                        <Text className="text-title font-lexend">{m?.titulo}</Text>
                     </Pressable>
                 )
             }))}

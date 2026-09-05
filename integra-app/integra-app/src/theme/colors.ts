@@ -1,4 +1,4 @@
-//Espejo de la paleta de colores de tailwind.config.js y globa.css
+//Espejo de la paleta de colores de tailwind.config.js y global.css
 //Es necesario para iconos como lucide, backdrops en android, etc.
 //SI SE cambia un valor aqui, tambien hay que cambiar en global.css
 
@@ -14,6 +14,8 @@ export const color = {
 
   border:       '#E3E6ED',
   borderStrong: '#CFD4DD',
+  borderSubtle:  '#E9ECF2',
+  borderPrimary: '#DCEBFE',
 
   primary:        '#1C469C',
   primaryPressed: '#17367C',

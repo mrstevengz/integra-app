@@ -23,7 +23,6 @@ export default function DiagnosticosScreen() {
     const condiciones = condicionesDelPerfil(useValue(condiciones$), perfil.id)
     const alergias = delPerfil(useValue(alergias$), perfil.id)
 
-    const direction = SwipeDirection
     const swipeableRef = useRef<SwipeableMethods>(null)
 
 
@@ -100,7 +99,7 @@ export default function DiagnosticosScreen() {
     )
 }
 
-function RightSwipe(prog: SharedValue<number>, drag: SharedValue<number>, methods: SwipeableMethods, onEdit: () => void, onDelete: () => void) {
+export function RightSwipe(prog: SharedValue<number>, drag: SharedValue<number>, methods: SwipeableMethods, onEdit: () => void, onDelete: () => void) {
     const styleAnimation = useAnimatedStyle(() => {
         return {
             transform: [{translateX: drag.value + 160}]

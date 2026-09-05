@@ -2,7 +2,7 @@ import { TipoMedicion } from "@/state/mediciones";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 import { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
-import { alHacerPaso, numeroDesdeTexto } from "./medicion-schema";
+import { alHacerPaso, numeroDesdeTexto, redondear } from "./medicion-schema";
 
 //Tipo de TS generico para pasar un 'FieldValue', que es un tipo de 'react-hook-forms' que recibe un nombre y un controlador. 
 //Para el campo de presion arterial, existen DOS valores a cambiar. Por lo tanto, el form debe cambiar. Recibe el controlador y el nombre primario y secundario de los valores del schema de zod. El tipo de presion arterial es el unico al que se le pasan valor primario y valor secundario
@@ -43,11 +43,9 @@ export default function CampoMedicionDoble<T extends FieldValues>({control, nomb
     //Agrega o resta segun el campo
     const botonManejarClick = (amount: number, type: 'add' | 'restar') => {
         const currVal = Number(campoActivo.field.value) || 0
-        const nuevoValor = type === 'add' ? currVal + amount : currVal - amount
+        const nuevoValor = redondear(type === 'add' ? currVal + amount : currVal - amount)
 
         campoActivo.field.onChange(nuevoValor)
-        if (activo === 'primario') setTextoPrimario(String(nuevoValor))
-        else setTextoSecundario(String(nuevoValor))
     }
 
     return (

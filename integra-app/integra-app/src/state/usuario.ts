@@ -13,6 +13,7 @@ export type Perfil = {
     telefono: string | null
     tipo_sangre: string | null
     medico_tratante: string | null
+    avatar_path: string | null
     created_at: string
     updated_at: string
     deleted: boolean
@@ -43,4 +44,8 @@ export function edadEnAnios(fechaNacimiento: string): number | null {
 
     if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < dia)) edad--
     return edad >= 0 ? edad : null
+}
+
+export function conseguirIniciales(perfil: Perfil): string {
+    return `${perfil.nombre?.[0] ?? ''}${perfil.apellidos?.[0] ?? ''}`.toUpperCase()
 }

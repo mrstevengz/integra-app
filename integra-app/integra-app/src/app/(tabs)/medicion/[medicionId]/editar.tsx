@@ -115,8 +115,8 @@ function Formulario({ tipo, item }: { tipo: TipoMedicion; item: Medicion }) {
       });
       reset(values);
       router.navigate({
-        pathname: "/medicion/agregar/[medicionTipo]/[resultadoMedicion]",
-        params: { resultadoMedicion: item.id },
+        pathname: "/medicion/[medicionTipo]/agregar/[resultadoMedicion]",
+        params: { resultadoMedicion: item.id, medicionTipo: tipo.id },
       });
     } catch (error) {
       console.error("No se pudo guardar la medicion", error);

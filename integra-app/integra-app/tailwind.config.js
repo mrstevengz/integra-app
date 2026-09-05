@@ -10,6 +10,11 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        lexend: ["LexendDeca-Regular"],
+        "lexend-bold": ["LexendDeca-Bold"],
+        "lexend-extrabold": ["LexendDeca-Black"],
+      },
       colors: {
         surface: {
           DEFAULT: c("--surface"),
@@ -27,8 +32,10 @@ module.exports = {
         },
         line: {
           DEFAULT: c("--border"),
+          subtle: c("--border-subtle"),
           strong: c("--border-strong"),
           focus: c("--border-focus"),
+          primary: c("--border-primary"),
         },
         primary: {
           DEFAULT: c("--primary"),
@@ -52,9 +59,6 @@ module.exports = {
           subtle: c("--danger-subtle"),
           "on-subtle": c("--danger-on-subtle"),
         },
-
-        // legacy
-        // legacy
         "bg-color": c("--background-color"),
         "neutral-color": c("--neutral-color"),
         "txt-color": c("--text-color"),
@@ -71,6 +75,19 @@ module.exports = {
         label: ["15px", { lineHeight: "20px" }],
         caption: ["14px", { lineHeight: "20px" }],
         "large-title": ["34px", { lineHeight: "41px" }],
+        tab: ["11px", { lineHeight: "14px", letterSpacing: "0.2px" }],
+      },
+
+      letterSpacing: {
+        "large-title": "-1px",
+        display: "-0.8px",
+        title: "-0.6px",
+        heading: "-0.4px",
+        subheading: "-0.2px",
+      },
+
+      borderWidth: {
+        hairline: "0.5px",
       },
 
       borderRadius: {

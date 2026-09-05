@@ -14,6 +14,7 @@ import {
 } from "@/state/exportaciones";
 import { color } from "@/theme/colors";
 
+//Pantalla inicial al generar una exportacion. Utiliza un borrador (que no se guarda en la base de datos y se borra luego de crear/salirse de la creacion). Necesita sobrevivir en la siguiente pantalla para seleccionar la vigencia, por eso se almacena temporalmente en memoria. El usuario escoge las secciones que desea en la exportacion, las cuales se guardan y se almacenan en el borrador.
 export default function NuevaExportacionScreen() {
     const perfil = useValue(perfil$)
     const borrador = useValue(borradorExportacion$)
@@ -29,6 +30,7 @@ export default function NuevaExportacionScreen() {
         </View>
     )
 
+    //Permite al usuario continuar (si hay al menos 1 seccion en el borrador)
     const puedeContinuar = haySeccionesElegidas(borrador.secciones)
 
     return (

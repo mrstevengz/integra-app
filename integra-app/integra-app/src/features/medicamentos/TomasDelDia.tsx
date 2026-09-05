@@ -14,7 +14,7 @@ import {
 import Modal from 'react-native-modal'
 import { useState } from "react"
 import { buscarPorId } from "@/state/consultas"
-import { colorEstado, etiquetaEstado } from "./estados"
+import { colorEstado, etiquetaEstado, iconoEstado } from "./estados"
 import { marcarComoTomada, marcarComoOmitida, posponerToma, revertirAccion, marcarTodasTomadas, revertirTodasTomadas } from "@/state/tomas-acciones"
 import { type FormaFarmaceutica, type Medicamento } from "@/state/medicamentos";
 import { type GrupoTomas } from "@/state/tomas";
@@ -59,8 +59,8 @@ export function TomasDelDia({ grupo, medicamentos }: Props) {
 
     return (
         <View className="flex flex-col border border-line bg-surface-raised">
-            <View className="flex-row items-center justify-between px-5 py-4 bg-surface">
-                <Text className="text-label font-semibold text-content">{grupo.etiqueta}</Text>
+            <View className="flex-row items-center justify-between px-5 py-4 bg-surface-raised">
+                <Text className="font-lexend-bold text-primary">{grupo.etiqueta}</Text>
 
                 {sinResolver.length > 1 && !todasTomadas && (
                     <Pressable
@@ -71,7 +71,7 @@ export function TomasDelDia({ grupo, medicamentos }: Props) {
                         accessibilityRole="button"
                         className="rounded-full bg-primary px-3 py-2 active:bg-primary-pressed"
                     >
-                        <Text className="text-caption font-semibold text-content-on-primary">Tomar todas</Text>
+                        <Text className="font-lexend-bold text-content-on-primary">Tomar todas</Text>
                     </Pressable>
                 )}
 
@@ -84,7 +84,7 @@ export function TomasDelDia({ grupo, medicamentos }: Props) {
                         accessibilityRole="button"
                         className="rounded-full bg-primary px-3 py-2 active:bg-primary-pressed"
                     >
-                        <Text className="text-caption font-semibold text-content-on-primary">Deshacer</Text>
+                        <Text className="font-lexend-bold text-content-on-primary">Deshacer</Text>
                     </Pressable>
                 )}
             </View>
@@ -99,18 +99,18 @@ export function TomasDelDia({ grupo, medicamentos }: Props) {
                         accessibilityRole="button"
                         className={`px-5 py-4 active:bg-surface flex-row flex'}`}
                     >
-                        <View className="flex-2 flex p-3 items-center justify-center rounded-control bg-surface border border-line mr-4">
+                        <View className="flex-2 flex p-3 items-center justify-center rounded-control mr-4">
                             {iconoDeForma(med?.forma)}
                         </View>
 
                         <View className="flex-1 flex-row items-center justify-between">
                             <View className="flex-1 pr-3">
-                                <Text className={` text-body font-medium ${t.estado === 'tomada' || t.estado === 'omitida' ? "line-through text-content-muted" : 'text-content'}`}>
-                                    {med ? `${med.nombre} | ${med.dosis} ${med.unidad}` : 'Medicamento'}
+                                <Text className={`font-lexend text-subheading ${t.estado === 'tomada' || t.estado === 'omitida' ? "line-through text-content-muted" : 'text-content'}`}>
+                                    {med ? `${med.nombre} ${med.dosis} ${med.unidad}` : 'Medicamento'}
                                 </Text>
 
                                 {med?.con_alimentos && med.con_alimentos !== 'indiferente' && (
-                                    <Text className="text-caption text-content-muted mt-0.5">
+                                    <Text className="font-lexend text-content-muted mt-0.5">
                                         {med.con_alimentos === 'con' ? 'Con alimentos' : 'Sin alimentos'}
                                     </Text>
                                 )}
@@ -127,10 +127,7 @@ export function TomasDelDia({ grupo, medicamentos }: Props) {
                             </View>
 
                             <View className="flex-row items-center gap-2">
-                                <Text className={`text-caption ${colorEstado(t.estado)}`}>
-                                    {etiquetaEstado(t.estado)}
-                                </Text>
-                                <Text className="text-content-disabled text-heading">›</Text>
+                                <Text className="text-content-disabled text-title">{iconoEstado(t.estado)}</Text>
                             </View>
 
                         </View>

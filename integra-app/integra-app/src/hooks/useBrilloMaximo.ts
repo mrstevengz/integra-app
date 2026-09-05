@@ -1,6 +1,16 @@
 import { useCallback } from "react"
 import { useFocusEffect } from "expo-router"
+import { Platform } from "react-native"
 import * as Brightness from "expo-brightness"
+
+function restaurarBrillo(previo: number | null) {
+    if (Platform.OS === 'android') {
+        Brightness.restoreSystemBrightnessAsync().catch(() => {})
+        return
+    }
+
+    if (previo != null) Brightness.setBrightnessAsync(previo).catch(() => {})
+}
 
 export function useBrilloMaximo(activo: boolean) {
     useFocusEffect(
@@ -21,7 +31,7 @@ export function useBrilloMaximo(activo: boolean) {
 
             return () => {
                 cancelado = true
-                if (previo != null) Brightness.setBrightnessAsync(previo).catch(() => {})
+                restaurarBrillo(previo)
             }
         }, [activo]),
     )

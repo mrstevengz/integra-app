@@ -6,7 +6,7 @@ import { ActivityIndicator, View, Text, Pressable } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { perfil$ } from "@/state/usuario";
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
-
+import { useFonts } from "expo-font"
 
 export function ErrorBoundary({error, retry}: ErrorBoundaryProps) {
   return (
@@ -21,6 +21,14 @@ export function ErrorBoundary({error, retry}: ErrorBoundaryProps) {
 }
 
 export default function RootLayout() {
+  //Inicializa los fonts en assets
+  const [fuentesListas] = useFonts({
+  "LexendDeca-Regular": require("../../assets/fonts/LexendDeca-Regular.ttf"),
+  "LexendDeca-Bold": require("../../assets/fonts/LexendDeca-Bold.ttf"),
+  "LexendDeca-Black": require("../../assets/fonts/LexendDeca-Black.ttf"),
+});
+
+  //Inicializa la sesion y el estado, y maneja cuando se esta cargando, cerrando sesion para cargar las pantallas solo cuando ya esten inicializados con informacion.
   const perfil = useValue(perfil$)
   const cargando = useValue(auth$.cargando)
   const cerrandoSesion = useValue(auth$.cerrandoSesion)
@@ -29,7 +37,7 @@ export default function RootLayout() {
   //No dejar de cargar hasta confirmar que los datos pertenecen al usuario
   const sesionLista = !!sesion && perfil.id === sesion.user.id
 
-  if(cargando || cerrandoSesion || (!!sesion && !sesionLista)) {
+  if(cargando || cerrandoSesion || (!!sesion && !sesionLista) || !fuentesListas) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
         <ActivityIndicator size="large"/>

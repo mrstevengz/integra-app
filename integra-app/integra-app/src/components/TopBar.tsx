@@ -22,15 +22,15 @@ export default function TopBar({
 }: TopBarProps) {
    if (grande) {
         return (
-            <View className="bg-surface px-5 pt-2 pb-3 flex-row items-start justify-between">
+            <View className="px-5 pt-2 pb-3 flex-row items-start justify-between">
                 <View className="flex-1 pr-3">
                     {subtitulo && (
-                        <Text className="text-caption text-content-muted" numberOfLines={1}>
+                        <Text className="text-caption text-content-muted font-lexend" numberOfLines={1}>
                             {subtitulo}
                         </Text>
                     )}
                     <Text
-                        className="text-large-title font-bold text-content"
+                        className="text-large-title text-content font-lexend-bold"
                         style={{ letterSpacing: -0.8 }}
                         numberOfLines={1}
                     >
@@ -72,7 +72,7 @@ export default function TopBar({
                 </Pressable>         
             )}
 
-            <Text className="text-subheading font-bold text-content px-14" numberOfLines={1}>
+            <Text className="text-subheading font-bold font-lexend text-content px-14" numberOfLines={1}>
                 {name}
             </Text>
         </View>

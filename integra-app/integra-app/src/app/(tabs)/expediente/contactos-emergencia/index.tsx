@@ -7,11 +7,17 @@ import { View, ScrollView, Pressable, Text, ActivityIndicator } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 import { perfil$ } from "@/state/usuario";
 import { color } from "@/theme/colors";
+import { useRef } from "react";
+import Swipeable, { SwipeableMethods, SwipeDirection } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { RightSwipe } from "../diagnosticos";
+import { pedirConfirmacion } from "@/components/Alert";
 
 export default function ContactosEmergenciaScreen() {
 
     const perfil = useValue(perfil$)
     const contactos = contactosDelPerfil(useValue(contactosEmergencia$), perfil.id)
+
+    const swipeableRef = useRef<SwipeableMethods>(null)
     
     if(!perfil.id || !contactos) {
           return (
@@ -38,11 +44,34 @@ export default function ContactosEmergenciaScreen() {
 
                     <Pressable>
                          {contactos.map((contacto) => (
-                            <ContactoEmergencia key={contacto.id} nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono} 
-                            onPress={() => router.navigate({
-                            pathname: '/expediente/contactos-emergencia/[contactoId]',
-                            params: {contactoId: contacto.id}
-                            })}/>
+                            <Swipeable key = {contacto.id} friction={1} rightThreshold={140} overshootRight={false} renderRightActions={(prog, drag, methods) => 
+                            RightSwipe(
+                            prog, drag, methods, 
+                            () => router.navigate({
+                                pathname: '/expediente/contactos-emergencia/[contactoId]',
+                                params: {contactoId: contacto.id}
+                                }), 
+                                
+                            () => 
+                                pedirConfirmacion({
+                                    titulo: 'Eliminar contacto',
+                                    mensaje: 'Se eliminara el contacto de emergencia y toda su informacion. Se borrara del expediente',
+                                    textoConfirmar: 'Eliminar',
+                                    destructivo: true,
+                                    alConfirmar: () => {
+                                      contactosEmergencia$[contacto.id].delete()
+                                      router.back()
+                                    },
+                                })
+                            )} 
+
+                            ref={swipeableRef}
+                            >
+                                <ContactoEmergencia key={contacto.id} nombre={contacto.nombre} relacion={contacto.relacion} telefono = {contacto.telefono} />
+                            
+                            </Swipeable>   
+
+                            
                         ))}
                     </Pressable>
 

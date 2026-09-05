@@ -19,7 +19,7 @@ export default function TopBarSecondary({ active, tab1, tab2, route1, route2 }: 
   ]
 
   return (
-    <View className="bg-surface px-5 pt-1 pb-3">
+    <View className="px-5 py-3 bg-transparent">
         <View className="flex-row rounded-control bg-line-strong/30 p-1">
         {tabs.map((t) => (
           <Pressable
@@ -34,7 +34,7 @@ export default function TopBarSecondary({ active, tab1, tab2, route1, route2 }: 
             }`}
           >
             <Text className={`text-label ${
-              t.esActiva ? "font-bold text-content" : "font-medium text-content-muted"
+              t.esActiva ? "font-lexend-bold" : "text-content-muted"
             }`}>
               {t.texto}
             </Text>

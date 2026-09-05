@@ -1,7 +1,8 @@
 import { syncedTable } from "@/lib/sync";
 import { observable } from "@legendapp/state";
 import { fechaLocal, formatearHora } from "@/lib/fechas";
-import { delPerfil, masAntiguoPrimero } from "./consultas";
+import { buscarPorId, delPerfil, masAntiguoPrimero } from "./consultas";
+import { Medicamento } from "./medicamentos";
 
 //Tipo para representar el estado de la toma en la base de datos. 
 export type EstadoToma = 'pendiente' | 'tomada' | 'pospuesta' | 'omitida'
@@ -50,6 +51,16 @@ export function tomasDelDia(
         .filter((t) => fechaLocal(new Date(t.programada_para)) === dia)
         //Ordena por la hora, de mas temprano a mas tarde.
         .sort(masAntiguoPrimero((t) => t.programada_para))
+}
+
+export function tomasVigentesDelDia(
+    todas: Record<string, Toma> | undefined,
+    medicamentos: Record<string, Medicamento> | undefined,
+    fecha: Date,
+    perfilId: string | undefined,
+): Toma[] {
+    return tomasDelDia(todas, fecha, perfilId)
+        .filter((t) => !!buscarPorId(medicamentos, t.medicamento_id))
 }
 
 export function estaSinResolver(t: Toma): boolean {
